@@ -2,7 +2,7 @@
 
 BioForge is a Python-based bioinformatics toolkit under active development, designed with a clean, modular, and extensible architecture.
 
-Version **0.3.0** introduces the project's core architecture, including biological sequence validation, sequence representation, FASTA file loader, a simple graphical user interface, and an application controller.
+Version **0.2.0** introduces the project's core architecture, including biological sequence validation, sequence representation, a simple graphical user interface, and an application controller.
 
 The long-term goal of BioForge is to evolve into a comprehensive toolkit for biological sequence analysis, visualization, file handling, and AI-assisted bioinformatics workflows.
 
@@ -16,7 +16,7 @@ The long-term goal of BioForge is to evolve into a comprehensive toolkit for bio
 
 🚧 BioForge is currently under active development.
 
-Version 0.3.0 establishes the project's foundation and architecture. New bioinformatics features will be introduced incrementally in future releases.
+Version 0.2.0 establishes the project's foundation and architecture. New bioinformatics features will be introduced incrementally in future releases.
 
 ---
 
