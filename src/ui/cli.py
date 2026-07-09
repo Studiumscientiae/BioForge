@@ -17,7 +17,8 @@ Does not perform:
 """
 
 import customtkinter as ctk
-from src.main import process_sequence
+from tkinter import filedialog
+from src.main import process_sequence, load_sequences
 
 class BioForgeApp(ctk.CTk):
 
@@ -37,6 +38,7 @@ class BioForgeApp(ctk.CTk):
         self.main_frame.grid(row=0, column=1, sticky="nsew")
 
         self.validation_button = None
+        self.load_fasta_button = None
         self.name_entry = None
         self.sequence_text= None
         self.process_button= None
@@ -55,6 +57,12 @@ class BioForgeApp(ctk.CTk):
         self.validation_button= ctk.CTkButton(self.sidebar,
                                               text="Sequence Validation")
         self.validation_button.pack(fill="x",padx=10,pady=5)
+
+        self.load_fasta_button = ctk.CTkButton(self.sidebar,
+                                         text="Load FASTA",
+                                         command= self.load_fasta)
+
+        self.load_fasta_button.pack(fill="x",padx=10,pady=5)
 
     def create_main_frame(self):
         """ Create the main content area."""
@@ -104,13 +112,42 @@ class BioForgeApp(ctk.CTk):
         try:
             result=process_sequence(name, sequence)
 
-            self.result_box.delete("1.0","end")
-            self.result_box.insert("1.0",str(result))
+            self.display_result(str(result))
 
         except ValueError as error:
-            self.result_box.delete("1.0", "end")
-            self.result_box.insert("1.0", str(error))
+            self.display_result(str(error))
 
+    def load_fasta(self):
+        """Load sequences from a FASTA file."""
+
+        file_path = filedialog.askopenfilename(
+            title="Open FASTA file",
+            filetypes=[
+                ("FASTA files", "*.fasta *.fa *.fna"),
+                ("All files", "*.*")
+            ]
+        )
+        if not file_path:
+            return
+
+        try:
+            sequences = load_sequences(file_path)
+
+            results = ""
+
+            results = "\n\n".join(str(sequence) for sequence in sequences)
+            self.display_result(results)
+
+        except ValueError as error:
+            self.display_result(str(error))
+
+    def display_result(self,text : str):
+        """
+        Display text in the result box.
+        """
+
+        self.result_box.delete("1.0","end")
+        self.result_box.insert("1.0", text)
 
 if __name__ == "__main__":
     app = BioForgeApp()

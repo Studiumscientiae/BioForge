@@ -17,6 +17,7 @@ Does not perform :
 
 from src.core.sequence import Sequence
 from src.core.validator import Validator
+from src.io.loader import Loader
 
 def process_sequence(name: str, sequence: str) -> Sequence:
     """
@@ -44,3 +45,20 @@ def process_sequence(name: str, sequence: str) -> Sequence:
         raise ValueError("Invalid DNA sequence.")
 
     return Sequence(name,sequence)
+
+def load_sequences(file_path: str):
+    """
+    Load biological sequences from a supported file.
+
+    Parameters
+    ----------
+    file_path : str
+        Path to the sequence file.
+
+    Returns
+    -------
+    list[Sequence]
+        Parsed Sequence objects.
+    """
+
+    return Loader.load(file_path)
