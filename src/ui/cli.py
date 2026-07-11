@@ -51,8 +51,6 @@ class BioForgeApp(ctk.CTk):
         # Pages
         # -------------------------
 
-        self.validation_page = None
-        self.analysis_page = None
         self.pages = {}
 
         # -------------------------
@@ -87,7 +85,8 @@ class BioForgeApp(ctk.CTk):
     def create_sidebar(self):
         """Create the navigation sidebar."""
 
-        self.sidebar = Sidebar(self)
+        self.sidebar = Sidebar(parent=self,
+                               navigate_callback= self.show_page)
 
         self.sidebar.grid(row=0,column=0,sticky="ns",padx=(10, 5),pady=10)
 
@@ -98,7 +97,8 @@ class BioForgeApp(ctk.CTk):
     def create_page_container(self):
         """Create the page container."""
 
-        self.page_container = ctk.CTkFrame(self)
+        self.page_container = ctk.CTkFrame(self,
+                                           fg_color="transparent")
 
         self.page_container.grid(row=0,column=1,sticky="nsew",padx=(5, 10),pady=10)
 
@@ -111,15 +111,13 @@ class BioForgeApp(ctk.CTk):
 
     def create_pages(self):
         """Create all application pages."""
-        self.validation_page = ValidationPage(self.page_container)
-        self.validation_page.grid(row=0,column=0,sticky="nsew")
-
-        self.analysis_page = AnalysisPage(self.page_container)
-        self.analysis_page.grid(row=0,column=0,sticky="nsew")
-
         self.pages = {
-            "validation": self.validation_page,
-            "analysis": self.analysis_page}
+            "validation": ValidationPage(self.page_container),
+            "analysis": AnalysisPage(self.page_container),
+        }
+
+        for page in self.pages.values():
+            page.grid(row=0, column=0, sticky="nsew")
 
 
     # -------------------------
@@ -134,6 +132,8 @@ class BioForgeApp(ctk.CTk):
         if page:
             page.tkraise()
 
+            if self.sidebar:
+                self.sidebar.set_active_page(page_name)
 
 def main():
 
