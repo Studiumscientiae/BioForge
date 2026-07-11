@@ -213,11 +213,3 @@ class ValidationPage(ctk.CTkFrame):
         self.result_box.delete("1.0","end")
         self.result_box.insert("1.0", text)
 
-if __name__ == "__main__":
-    app = ctk.CTk()
-    app.geometry("1200x700")
-
-    page = ValidationPage(app)
-    page.pack(fill="both", expand=True)
-
-    app.mainloop()

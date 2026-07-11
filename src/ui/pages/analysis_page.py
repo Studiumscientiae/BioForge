@@ -239,13 +239,3 @@ class AnalysisPage(ctk.CTkFrame):
         """Display analysis results."""
         self.result_panel.delete("1.0", "end")
         self.result_panel.insert("1.0", text)
-
-
-if __name__ == "__main__":
-    app = ctk.CTk()
-    app.geometry("1200x700")
-
-    page = AnalysisPage(app)
-    page.pack(fill="both", expand=True)
-
-    app.mainloop()
