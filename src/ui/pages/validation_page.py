@@ -19,7 +19,7 @@ Does not perform:
 
 import customtkinter as ctk
 from tkinter import filedialog
-from src.main import process_sequence, load_sequences
+from src.services.sequence_service import process_sequence, load_sequences
 
 class ValidationPage(ctk.CTkFrame):
 

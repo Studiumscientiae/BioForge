@@ -1,19 +1,5 @@
-"""
-main.py
 
-Application controller for BioForge.
 
-Responsibilities :
-- Coordinate application workflow
-- Validate user input
-- Create sequence objects
-- Return results to the user interface
-
-Does not perform :
-- Biological analysis
-- User interface rendering
-- File parsing
-"""
 
 from src.core.sequence import Sequence
 from src.core.validator import Validator

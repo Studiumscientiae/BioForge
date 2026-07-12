@@ -17,6 +17,7 @@ Does not perform:
 """
 
 import customtkinter as ctk
+from src.ui.theme import CHECKBOX_PADX, CHECKBOX_PADY
 
 class AnalysisPage(ctk.CTkFrame):
     """
@@ -99,6 +100,16 @@ class AnalysisPage(ctk.CTkFrame):
         self.create_central_dogma_section()
         self.create_action_section()
 
+    def create_checkbox(self, parent, text):
+        """Create and pack a standard analysis checkbox."""
+
+        checkbox = ctk.CTkCheckBox(parent,
+                                   text=text)
+
+        checkbox.pack(anchor="w",padx=CHECKBOX_PADX,pady=CHECKBOX_PADY)
+
+        return checkbox
+
     def create_statistics_section(self):
         """Build the statistics tools."""
 
@@ -111,8 +122,8 @@ class AnalysisPage(ctk.CTkFrame):
 
         title.pack(anchor="w", padx=10, pady=(10, 5))
 
-        self.length_checkbox = ctk.CTkCheckBox(self.statistics_frame,
-                                               text="Sequence Length")
+        self.length_checkbox = self.create_checkbox(self.statistics_frame,
+                                                    "Sequence Length")
 
         self.length_checkbox.pack(anchor="w", padx=15, pady=2)
 

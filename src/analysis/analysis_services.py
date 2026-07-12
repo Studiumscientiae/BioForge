@@ -18,8 +18,6 @@ Does not perform:
 - Analysis algorithms
 """
 
-import customtkinter as ctk
-
 class AnalysisServices:
     """
     Coordinates biological analyses.
