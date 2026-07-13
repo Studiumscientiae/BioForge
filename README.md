@@ -38,7 +38,7 @@ BioForge v0.4.1 includes
 - Clean project structure
 ---
 ## Project Structure
-
+``` text
 BioForge/
 │
 ├── src/
@@ -95,6 +95,7 @@ BioForge/
 ├── CHANGELOG.md
 ├── requirements.txt
 └── LICENSE
+```
 ---
 
 ## Installation
