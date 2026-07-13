@@ -17,7 +17,16 @@ Does not perform:
 """
 
 import customtkinter as ctk
-from src.ui.theme import CHECKBOX_PADX, CHECKBOX_PADY
+from src.ui.theme import (CHECKBOX_PADX, CHECKBOX_PADY,
+                          LEFT_PANEL_PADX, LEFT_PANEL_PADY,
+                          RIGHT_PANEL_PADX, RIGHT_PANEL_PADY,
+                          CHECKBOX_PADY_END, ACTION_BUTTON_PADX,
+                          ACTION_BUTTON_PADY, RESULT_PANEL_PADX,
+                          RESULT_PANEL_PADY, RESULT_TITLE_PADY,
+                          RESULT_TITLE_PADX, SECTION_TITLE_FONT,
+                          RESULT_TITLE_FONT, FRAME_PADY, FRAME_PADX,
+                          SECTION_TITLE_PADX, SECTION_TITLE_PADY, FRAME_TOP_PADY)
+
 
 class AnalysisPage(ctk.CTkFrame):
     """
@@ -80,11 +89,11 @@ class AnalysisPage(ctk.CTkFrame):
 
         # Left workspace panel
         self.left_panel = ctk.CTkFrame(self)
-        self.left_panel.grid(row=0,column=0,sticky="nsew",padx=(10, 5),pady=10)
+        self.left_panel.grid(row=0,column=0,sticky="nsew",padx=LEFT_PANEL_PADX,pady=LEFT_PANEL_PADY)
 
         # Right workspace panel
         self.right_panel = ctk.CTkFrame(self)
-        self.right_panel.grid(row=0,column=1,sticky="nsew",padx=(5, 10),pady=10)
+        self.right_panel.grid(row=0,column=1,sticky="nsew",padx=RIGHT_PANEL_PADX,pady=RIGHT_PANEL_PADY)
 
     # -------------------------
     # Left Panel
@@ -100,108 +109,78 @@ class AnalysisPage(ctk.CTkFrame):
         self.create_central_dogma_section()
         self.create_action_section()
 
-    def create_checkbox(self, parent, text):
+    def create_checkbox(self, parent, text, pady=CHECKBOX_PADY):
         """Create and pack a standard analysis checkbox."""
 
-        checkbox = ctk.CTkCheckBox(parent,
-                                   text=text)
-
-        checkbox.pack(anchor="w",padx=CHECKBOX_PADX,pady=CHECKBOX_PADY)
-
+        checkbox = ctk.CTkCheckBox(parent, text=text)
+        checkbox.pack(
+            anchor="w",
+            padx=CHECKBOX_PADX,
+            pady=pady
+        )
         return checkbox
+
+    def create_section(self, title_text, pady):
+        """Create a titled analysis section in the left panel."""
+
+        frame = ctk.CTkFrame(self.left_panel)
+        frame.pack(fill="x", padx=FRAME_PADX, pady=pady)
+
+        title = ctk.CTkLabel(frame,
+                             text=title_text,
+                             font=SECTION_TITLE_FONT)
+
+        title.pack(anchor="w",padx=SECTION_TITLE_PADX,pady=SECTION_TITLE_PADY)
+
+        return frame
 
     def create_statistics_section(self):
         """Build the statistics tools."""
 
-        self.statistics_frame = ctk.CTkFrame(self.left_panel)
-        self.statistics_frame.pack(fill="x", padx=15, pady=(15, 10))
-
-        title = ctk.CTkLabel(self.statistics_frame,
-                             text="Statistics",
-                             font=("Arial", 16, "bold"))
-
-        title.pack(anchor="w", padx=10, pady=(10, 5))
+        self.statistics_frame = self.create_section("Statistics",FRAME_TOP_PADY)
 
         self.length_checkbox = self.create_checkbox(self.statistics_frame,
-                                                    "Sequence Length")
+                                                    text="Sequence Length")
 
-        self.length_checkbox.pack(anchor="w", padx=15, pady=2)
-
-        self.gc_checkbox = ctk.CTkCheckBox(self.statistics_frame,
+        self.gc_checkbox = self.create_checkbox(self.statistics_frame,
                                            text="GC Content")
 
-        self.gc_checkbox.pack(anchor="w", padx=15, pady=2)
-
-        self.nucleotide_checkbox = ctk.CTkCheckBox(self.statistics_frame,
+        self.nucleotide_checkbox = self.create_checkbox(self.statistics_frame,
                                                    text="Nucleotide Count")
 
-        self.nucleotide_checkbox.pack(anchor="w", padx=15, pady=2)
-
-        self.weight_checkbox = ctk.CTkCheckBox(self.statistics_frame,
-                                               text="Molecular Weight")
-
-        self.weight_checkbox.pack(anchor="w", padx=15, pady=(2, 10))
+        self.weight_checkbox = self.create_checkbox(self.statistics_frame,
+                                               "Molecular Weight",CHECKBOX_PADY_END)
 
     def create_sequence_operations_section(self):
         """Build sequence operation tools."""
 
-        self.sequence_operations_frame = ctk.CTkFrame(self.left_panel)
-        self.sequence_operations_frame.pack(fill="x", padx=15, pady=10)
+        self.sequence_operations_frame = self.create_section("Sequence Transformations", FRAME_PADY)
 
-        title = ctk.CTkLabel(self.sequence_operations_frame,
-                             text="Sequence Transformations",
-                             font=("Arial", 16, "bold"))
-
-        title.pack(anchor="w", padx=10, pady=(10, 5))
-
-        self.reverse_checkbox = ctk.CTkCheckBox(self.sequence_operations_frame,
+        self.reverse_checkbox = self.create_checkbox(self.sequence_operations_frame,
                                                 text="Reverse")
 
-        self.reverse_checkbox.pack(anchor="w", padx=15, pady=2)
-
-        self.complement_checkbox = ctk.CTkCheckBox(self.sequence_operations_frame,
+        self.complement_checkbox = self.create_checkbox(self.sequence_operations_frame,
                                                    text="Complement")
 
-        self.complement_checkbox.pack(anchor="w", padx=15, pady=2)
-
-        self.reverse_complement_checkbox = ctk.CTkCheckBox(self.sequence_operations_frame,
-                                                           text="Reverse Complement")
-
-        self.reverse_complement_checkbox.pack(anchor="w", padx=15, pady=2)
+        self.reverse_complement_checkbox = self.create_checkbox(self.sequence_operations_frame,
+                                                           "Reverse Complement",CHECKBOX_PADY_END)
 
     def create_central_dogma_section(self):
         """Build Central Dogma analysis tools."""
 
-        self.central_dogma_frame = ctk.CTkFrame(self.left_panel)
-        self.central_dogma_frame.pack(fill="x", padx=15, pady=10)
+        self.central_dogma_frame = self.create_section("Central Dogma", FRAME_PADY)
 
-        title = ctk.CTkLabel(self.central_dogma_frame,
-                             text="Central Dogma",
-                             font=("Arial", 16, "bold"))
-
-        title.pack(anchor="w", padx=10, pady=(10, 5))
-
-        self.transcription_checkbox = ctk.CTkCheckBox(self.central_dogma_frame,
+        self.transcription_checkbox = self.create_checkbox(self.central_dogma_frame,
                                                       text="RNA Transcription")
 
-        self.transcription_checkbox.pack(anchor="w", padx=15, pady=2)
-
-        self.translation_checkbox = ctk.CTkCheckBox(self.central_dogma_frame,
+        self.translation_checkbox = self.create_checkbox(self.central_dogma_frame,
                                                     text="Protein Translation")
 
-        self.translation_checkbox.pack(anchor="w", padx=15, pady=2)
-
-        self.codon_usage_checkbox = ctk.CTkCheckBox(self.central_dogma_frame,
+        self.codon_usage_checkbox = self.create_checkbox(self.central_dogma_frame,
                                                     text="Codon Usage")
 
-        self.codon_usage_checkbox.pack(anchor="w", padx=15, pady=2)
-
-        self.codon_frequency_checkbox = ctk.CTkCheckBox(self.central_dogma_frame,
-                                                        text="Codon Frequency")
-
-        self.codon_frequency_checkbox.pack(anchor="w", padx=15, pady=(2, 10))
-
-
+        self.codon_frequency_checkbox = self.create_checkbox(self.central_dogma_frame,
+                                                        "Codon Frequency", CHECKBOX_PADY_END)
 
     def create_action_section(self):
         """Build analysis action controls."""
@@ -210,7 +189,7 @@ class AnalysisPage(ctk.CTkFrame):
                                             text="Analyze",
                                             command=self.run_analysis)
 
-        self.analyze_button.pack(fill="x",padx=15,pady=(15, 15))
+        self.analyze_button.pack(fill="x",padx=ACTION_BUTTON_PADX,pady=ACTION_BUTTON_PADY)
 
     # -------------------------
     # Right Panel
@@ -219,18 +198,18 @@ class AnalysisPage(ctk.CTkFrame):
     def create_right_panel(self):
         """Build the analysis results workspace."""
 
-        self.right_panel.grid_columnconfigure(0, weight=1)
-        self.right_panel.grid_rowconfigure(1, weight=1)
+        self.right_panel.grid_columnconfigure(0, weight=2)
+        self.right_panel.grid_rowconfigure(1, weight=2)
 
         title = ctk.CTkLabel(self.right_panel,
                              text="Analysis Results",
-                             font=("Arial", 20, "bold"))
+                             font=RESULT_TITLE_FONT)
 
-        title.grid(row=0,column=0,padx=15,pady=(15, 10),sticky="w")
+        title.grid(row=0,column=0,padx=RESULT_TITLE_PADX,pady=RESULT_TITLE_PADY,sticky="w")
 
         self.result_panel = ctk.CTkTextbox(self.right_panel)
 
-        self.result_panel.grid(row=1,column=0,sticky="nsew",padx=15,pady=(0, 15))
+        self.result_panel.grid(row=1,column=0,sticky="nsew",padx=RESULT_PANEL_PADX,pady=RESULT_PANEL_PADY)
 
     # -------------------------
     # Event Handlers

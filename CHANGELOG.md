@@ -4,6 +4,37 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [v0.4.1] - 2026-07-13
+
+### Added
+
+- Multi-page application architecture
+- Validation workspace page
+- Analysis workspace page
+- Reusable sidebar navigation component
+- Centralized UI theme configuration (`theme.py`)
+- Analysis workspace layout with placeholder tools
+- Export toolbar component foundation
+- Modular UI component structure
+
+### Changed
+
+- Refactored the application into a page-based architecture
+- Moved navigation management to the application shell
+- Replaced direct window management with centralized page navigation
+- Standardized UI styling using shared theme constants
+- Simplified widget creation through reusable UI helper methods
+
+### Improved
+
+- Better separation of UI responsibilities
+- Cleaner project architecture following the Single Responsibility Principle
+- Improved maintainability and scalability
+- Consistent application-wide styling
+- Prepared foundation for future analysis algorithms and services
+
+---
+
 ## [v0.3.0] - 2026-07-09
 
 ### Added

@@ -1,5 +1,20 @@
+"""
+sequence_service.py
 
+Application service for sequence processing.
 
+Responsibilities:
+- Validate DNA sequences.
+- Create Sequence domain objects.
+- Load sequences from supported file formats.
+
+Does not perform:
+- Biological analysis
+- GUI operations
+- File format parsing logic
+- Data exporting
+- History management
+"""
 
 from src.core.sequence import Sequence
 from src.core.validator import Validator

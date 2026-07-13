@@ -2,60 +2,91 @@
 
 BioForge is a Python-based bioinformatics toolkit under active development, designed with a clean, modular, and extensible architecture.
 
-Version **0.3.0** introduces the project's core architecture, including biological sequence validation, sequence representation, FASTA file loader, a simple graphical user interface, and an application controller.
+Version **0.4.1** introduces the project's core architecture, including biological sequence validation, sequence representation, FASTA file loader, a simple graphical user interface, and an application controller.
 
 The long-term goal of BioForge is to evolve into a comprehensive toolkit for biological sequence analysis, visualization, file handling, and AI-assisted bioinformatics workflows.
 
 ---
 ## Version
 
-**Current Version:** v0.3.0
+**Current Version:** v0.4.1
 
 ---
-## Project Status
-
 🚧 BioForge is currently under active development.
 
-Version 0.3.0 establishes the project's foundation and architecture. New bioinformatics features will be introduced incrementally in future releases.
+Version 0.4.1 establishes the application's modular GUI architecture and workspace foundation. The project now provides separate Validation and Analysis workspaces with a reusable navigation system and centralized UI theming.
+
+Biological analysis algorithms will be introduced in subsequent releases.
 
 ---
 
 ## Features
 
-BioForge v0.3.0 includes
+BioForge v0.4.1 includes
 
 - DNA sequence validation
 - Sequence object creation
 - FASTA file parsing
 - File loading system
 - File writing utilities
-- CustomTkinter GUI
-- Modular IO architecture
+- Multi-page CustomTkinter interface
+- Validation workspace
+- Analysis workspace
+- Reusable sidebar navigation
+- Centralized UI theme system
+- Modular component architecture
 - Clean project structure
 ---
 ## Project Structure
 
-```text
 BioForge/
 │
 ├── src/
+│   ├── analysis/
+│   │   ├── __init__.py
+│   │   └── analysis_services.py
+│   │
 │   ├── core/
 │   │   ├── sequence.py
 │   │   └── validator.py
 │   │
 │   ├── io/
-│   │    ├── fasta_parser.py
-│   │    ├── file_writer.py 
-│   │    └── loader.py
+│   │   ├── fasta_parser.py
+│   │   ├── file_writer.py
+│   │   └── loader.py
 │   │
-│   ├── ui/
-│   │   └── cli.py
+│   ├── services/
+│   │   ├── __init__.py
+│   │   ├── export_service.py
+│   │   ├── history_service.py
+│   │   └── sequence_service.py
 │   │
-│   └── main.py
+│   └── ui/
+│       ├── branding.py
+│       ├── cli.py
+│       ├── theme.py
+│       │
+│       ├── components/
+│       │   ├── __init__.py
+│       │   ├── analysis_tool_pane.py
+│       │   ├── collapsible_section.py
+│       │   ├── export_toolbar.py
+│       │   ├── history_pane.py
+│       │   ├── result_pane.py
+│       │   ├── sidebar.py
+│       │   └── splitter.py
+│       │
+│       ├── dialogs/
+│       │   ├── __init__.py
+│       │   ├── about_dialog.py
+│       │   └── export_dialog.py
+│       │
+│       └── pages/
+│           ├── __init__.py
+│           ├── analysis_page.py
+│           └── validation_page.py
 │
 ├── data/
-│   └── ten_sequences.fasta
-│    
 ├── docs/
 ├── reports/
 ├── tests/
@@ -64,7 +95,6 @@ BioForge/
 ├── CHANGELOG.md
 ├── requirements.txt
 └── LICENSE
-```
 ---
 
 ## Installation
@@ -107,119 +137,137 @@ BioForge is developed incrementally, with each version introducing new functiona
 
 ---
 
+## Roadmap
+
+BioForge is developed incrementally, with each release building upon a clean, modular, and extensible architecture.
+
+---
+
 ### v0.1.0 — Project Initialization ✅
 
-* Project structure
-* GitHub repository
-* README
-* License
-* Basic documentation
+- Project structure
+- GitHub repository
+- README
+- License
+- Basic documentation
 
 ---
 
 ### v0.2.0 — Core Architecture ✅
 
-* Sequence class
-* Validator
-* Application controller
-* CustomTkinter GUI
-* Modular project architecture
+- DNA sequence validation
+- Sequence object
+- Application controller
+- CustomTkinter GUI
+- Modular project architecture
 
 ---
 
 ### v0.3.0 — File I/O ✅
 
-* FASTA parser
-* File loader
-* File writer
-* File type validation
-* GUI file import
-* Improved error handling
+- FASTA parser
+- File loader
+- File writer
+- File type validation
+- GUI file import
+- Improved error handling
 
 ---
 
-### v0.4.0 — Basic Sequence Analysis 🚧
+### v0.4.1 — GUI Architecture Refactor ✅
 
-* GC content
-* Sequence length
-* Base composition (A, T, G, C)
-* Reverse complement
-* DNA → RNA transcription
-* DNA → Protein translation
-
----
-
-### v0.5.0 — Gene Feature Analysis 📋
-
-* Open Reading Frames (ORFs)
-* Reading frame analysis
-* Start and stop codon detection
-* Longest ORF identification
+- Multi-page application architecture
+- Validation workspace
+- Analysis workspace
+- Sidebar navigation
+- Shared UI theme
+- Modular UI components
+- Workspace foundation
+- Service layer foundation
 
 ---
 
-### v0.6.0 — Restriction Analysis 📋
+### v0.5.0 — Validation Workspace Implementation 🚧
 
-* Restriction enzyme database
-* Restriction site identification
-* Fragment prediction
-* Multiple enzyme analysis
-
----
-
-### v0.7.0 — Motif & Pattern Analysis 📋
-
-* Motif search
-* Consensus sequence generation
-* Pattern matching
-* Regular expression support
-* Degenerate nucleotide support
+- Validation engine integration
+- Connect GUI with validation logic
+- Validation report generation
+- Sequence cleaning tools
+- Invalid nucleotide detection
+- Automatic sequence normalization
+- Batch validation support
+- Validation statistics
 
 ---
 
-### v0.8.0 — Visualization 📋
+### v0.6.0 — Basic Sequence Analysis 📋
 
-* GC content plots
-* Base composition charts
-* Sequence length distribution
-* Exportable figures
+- GC content
+- Sequence length
+- Base composition (A, T, G, C)
+- Reverse complement
+- DNA → RNA transcription
+- DNA → Protein translation
 
 ---
 
-### v0.9.0 — Reporting & Export 📋
+### v0.7.0 — Gene Feature Analysis 📋
 
-* PDF reports
-* CSV export
-* Excel export
-* HTML reports
-* Analysis summaries
+- Open Reading Frames (ORFs)
+- Reading frame analysis
+- Start codon detection
+- Stop codon detection
+- Longest ORF identification
+
+---
+
+### v0.8.0 — Restriction Analysis 📋
+
+- Restriction enzyme database
+- Restriction site identification
+- Fragment prediction
+- Multiple enzyme analysis
+
+---
+
+### v0.9.0 — Motif & Pattern Analysis 📋
+
+- Motif search
+- Consensus sequence generation
+- Pattern matching
+- Regular expression support
+- Degenerate nucleotide support
 
 ---
 
 ### v1.0.0 — Stable Release 🎯
 
-* Complete graphical interface
-* FASTA support
-* Sequence analysis toolkit
-* ORF detection
-* Restriction analysis
-* Motif analysis
-* Data visualization
-* Report generation
-* Comprehensive documentation
-* Unit tests
-* Stable tagged release
+- Complete graphical interface
+- Validation workspace
+- Analysis toolkit
+- Gene feature analysis
+- Restriction analysis
+- Motif analysis
+- File I/O utilities
+- Export system
+- Comprehensive documentation
+- Unit tests
+- Stable release
+
+---
 
 ### Future Releases
+
 - Multiple sequence analysis
 - Sequence alignment
-- GenBank file support
-- Command-line interface (CLI)
+- GenBank support
+- Protein sequence analysis
+- Interactive visualizations
 - Streamlit web interface
-- Interactive data visualization
 - AI-assisted bioinformatics tools
+- Plugin architecture
+- Workflow automation
 - Comprehensive test coverage
-- Complete project documentation
 ---
 
 ## Contributing

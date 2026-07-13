@@ -20,6 +20,18 @@ Does not perform:
 import customtkinter as ctk
 from tkinter import filedialog
 from src.services.sequence_service import process_sequence, load_sequences
+from src.ui.theme import (LEFT_PANEL_PADX,LEFT_PANEL_PADY,
+                          RIGHT_PANEL_PADX,RIGHT_PANEL_PADY,
+                          LABEL_PADX, ENTRY_PADX, ENTRY_PADY,
+                          COMBOBOX_PADX, COMBOBOX_PADY,
+                          TEXTBOX_PADX, TEXTBOX_PADY,
+                          TEXTBOX_HEIGHT, BUTTON_PADY,
+                          BUTTON_PADY_END, ACTION_BUTTON_PADX,
+                          RESULT_TITLE_FONT,SECTION_TITLE_PADY,
+                          RESULT_TITLE_PADX, RESULT_TITLE_PADY,
+                          RESULT_PANEL_PADX, RESULT_PANEL_PADY
+                          )
+
 
 class ValidationPage(ctk.CTkFrame):
 
@@ -59,11 +71,11 @@ class ValidationPage(ctk.CTkFrame):
 
         # Left workspace panel
         self.left_panel = ctk.CTkFrame(self)
-        self.left_panel.grid(row=0,column=0,sticky="nsew",padx=(10, 5),pady=10)
+        self.left_panel.grid(row=0,column=0,sticky="nsew",padx=LEFT_PANEL_PADX,pady=LEFT_PANEL_PADY)
 
         # Right workspace panel
         self.right_panel = ctk.CTkFrame(self)
-        self.right_panel.grid(row=0,column=1,sticky="nsew",padx=(5, 10),pady=10)
+        self.right_panel.grid(row=0,column=1,sticky="nsew",padx=RIGHT_PANEL_PADX,pady=RIGHT_PANEL_PADY)
 
     # -------------------------
     # Left Panel
@@ -78,67 +90,108 @@ class ValidationPage(ctk.CTkFrame):
         self.create_action_buttons()
         self.create_input_section()
 
+    def create_label(self, parent, text):
+        """Create a standard form label."""
+
+        label = ctk.CTkLabel(parent, text=text)
+        label.pack(anchor="w", padx=LABEL_PADX)
+
+        return label
+
+    def create_entry(self, parent, placeholder):
+        """Create and pack a standard entry widget."""
+
+        entry = ctk.CTkEntry(parent,
+                             placeholder_text=placeholder)
+
+        entry.pack(fill="x",padx=ENTRY_PADX,pady=ENTRY_PADY)
+
+        return entry
+
+    def create_button(self, parent, text, command=None, pady=BUTTON_PADY):
+        """Create and pack a standard button."""
+
+        button = ctk.CTkButton(parent,
+                               text=text,
+                               command=command)
+
+        button.pack(fill="x",padx=ACTION_BUTTON_PADX,pady=pady)
+
+        return button
+
+    def create_combobox(self, parent, values):
+        """Create and pack a standard combobox."""
+
+        combobox = ctk.CTkComboBox(parent,
+                                   values=values)
+
+        combobox.pack(fill="x",padx=COMBOBOX_PADX,pady=COMBOBOX_PADY)
+
+        return combobox
+
+    def create_textbox(self, parent, height):
+        """Create and pack a standard textbox."""
+
+        textbox = ctk.CTkTextbox(parent,
+                                 height=height)
+
+        textbox.pack(fill="both",expand=True,padx=TEXTBOX_PADX,pady=TEXTBOX_PADY)
+
+        return textbox
+
     def create_sequence_selector(self):
-        """Loaded sequence selector."""
+        """Build the sequence selection controls."""
 
         title = ctk.CTkLabel(self.left_panel,
                              text="Sequence Validation",
-                             font=("Arial", 20, "bold"))
+                             font=RESULT_TITLE_FONT)
 
-        title.pack(pady=(15, 10))
+        title.pack(pady=SECTION_TITLE_PADY)
 
-        loaded_label = ctk.CTkLabel(self.left_panel,
-                                    text="Loaded Sequences")
+        self.create_label(self.left_panel, "Loaded Sequences")
 
-        loaded_label.pack(anchor="w", padx=15)
-
-        self.sequence_selector = ctk.CTkComboBox(self.left_panel,
-                                                 values=["No sequences loaded"])
-
-        self.sequence_selector.pack(fill="x", padx=15, pady=(5, 20))
+        self.sequence_selector = self.create_combobox(
+            self.left_panel,
+            ["No sequences loaded"]
+        )
 
     def create_action_buttons(self):
         """Load FASTA, Validate and Validate All buttons."""
 
-        self.load_button = ctk.CTkButton(self.left_panel,
-                                         text="Load FASTA",
-                                         command=self.load_fasta)
+        self.load_button = self.create_button(
+            self.left_panel,
+            "Load FASTA",
+            command=self.load_fasta
+        )
 
-        self.load_button.pack(fill="x", padx=15, pady=5)
+        self.validate_button = self.create_button(
+            self.left_panel,
+            "Validate",
+            command=self.process_input
+        )
 
-        self.validate_button = ctk.CTkButton(self.left_panel,
-                                             text="Validate",
-                                             command=self.process_input)
-
-        self.validate_button.pack(fill="x", padx=15, pady=5)
-
-        self.validate_all_button = ctk.CTkButton(self.left_panel,
-                                                 text="Validate All")
-
-        self.validate_all_button.pack(fill="x", padx=15, pady=(5, 20))
+        self.validate_all_button = self.create_button(
+            self.left_panel,
+            "Validate All",
+            pady=BUTTON_PADY_END
+        )
 
     def create_input_section(self):
         """Sequence name and sequence input."""
 
-        name_label = ctk.CTkLabel(self.left_panel,
-                                  text="Sequence Name")
+        self.create_label(self.left_panel, "Sequence Name")
 
-        name_label.pack(anchor="w", padx=15)
+        self.name_entry = self.create_entry(
+            self.left_panel,
+            "Enter sequence name"
+        )
 
-        self.name_entry = ctk.CTkEntry(self.left_panel,
-                                       placeholder_text="Enter sequence name")
+        self.create_label(self.left_panel, "Sequence Input")
 
-        self.name_entry.pack(fill="x", padx=15, pady=(5, 15))
-
-        sequence_label = ctk.CTkLabel(self.left_panel,
-                                      text="Sequence Input")
-
-        sequence_label.pack(anchor="w", padx=15)
-
-        self.sequence_text = ctk.CTkTextbox(self.left_panel,
-                                            height=250)
-
-        self.sequence_text.pack(fill="both",expand=True,padx=15,pady=(5, 15))
+        self.sequence_text = self.create_textbox(
+            self.left_panel,
+            TEXTBOX_HEIGHT
+        )
 
 
     # -------------------------
@@ -151,15 +204,28 @@ class ValidationPage(ctk.CTkFrame):
         self.right_panel.grid_columnconfigure(0, weight=1)
         self.right_panel.grid_rowconfigure(1, weight=1)
 
-        title = ctk.CTkLabel(self.right_panel,
-                             text="Validation Results",
-                             font=("Arial", 20, "bold"))
+        self.create_result_title("Validation Results")
+        self.create_result_box()
 
-        title.grid(row=0, column=0, padx=15, pady=(15, 10), sticky="w")
+    def create_result_title(self, text):
+        """Create the results panel title."""
+
+        title = ctk.CTkLabel(self.right_panel,
+                             text=text,
+                             font=RESULT_TITLE_FONT)
+
+        title.grid(row=0, column=0, padx=RESULT_TITLE_PADX, pady=RESULT_TITLE_PADY, sticky="w")
+
+        return title
+
+    def create_result_box(self):
+        """Create the results textbox."""
 
         self.result_box = ctk.CTkTextbox(self.right_panel)
 
-        self.result_box.grid(row=1,column=0,sticky="nsew",padx=15,pady=(0, 15))
+        self.result_box.grid(row=1,column=0,sticky="nsew",padx=RESULT_PANEL_PADX,pady=RESULT_PANEL_PADY)
+
+        return self.result_box
 
     # -------------------------
     # Event Handlers
@@ -195,8 +261,6 @@ class ValidationPage(ctk.CTkFrame):
         try:
             sequences = load_sequences(file_path)
 
-            results = ""
-
             results = "\n\n".join(str(sequence) for sequence in sequences)
             self.display_result(results)
 
@@ -212,4 +276,3 @@ class ValidationPage(ctk.CTkFrame):
 
         self.result_box.delete("1.0","end")
         self.result_box.insert("1.0", text)
-
