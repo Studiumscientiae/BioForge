@@ -20,46 +20,25 @@ from src.core.sequence import Sequence
 from src.core.validator import Validator
 from src.io.loader import Loader
 
-def process_sequence(name: str, sequence: str) -> Sequence:
+
+class SequenceService:
     """
-    Process a biological sequence
-    Parameters
-    ----------
-    name : str
-        Name of the sequence.
-
-    sequence : str
-        DNA sequence provided by the user.
-
-    Returns
-    -------
-    Sequence
-        A Sequence object if validation succeeds.
-
-    Raises
-    ------
-    ValueError
-        If the DNA sequence is invalid.
+    Coordinates sequence processing.
     """
 
-    if not Validator.is_valid_dna(sequence):
-        raise ValueError("Invalid DNA sequence.")
+    def validate_sequence(self,name: str,sequence: str) -> Sequence:
+        """
+        Validate user input and create a Sequence object.
+        """
 
-    return Sequence(name,sequence)
+        if not Validator.is_valid_dna(sequence):
+            raise ValueError("Invalid DNA sequence.")
 
-def load_sequences(file_path: str):
-    """
-    Load biological sequences from a supported file.
+        return Sequence(name, sequence)
 
-    Parameters
-    ----------
-    file_path : str
-        Path to the sequence file.
+    def load_sequences(self,file_path: str) -> list[Sequence]:
+        """
+        Load biological sequences from a supported file.
+        """
 
-    Returns
-    -------
-    list[Sequence]
-        Parsed Sequence objects.
-    """
-
-    return Loader.load(file_path)
+        return Loader.load(file_path)

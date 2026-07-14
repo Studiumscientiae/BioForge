@@ -25,7 +25,8 @@ import customtkinter as ctk
 from src.ui.components.sidebar import Sidebar
 from src.ui.pages.validation_page import ValidationPage
 from src.ui.pages.analysis_page import AnalysisPage
-
+from src.analysis.analysis_service import AnalysisService
+from src.services.sequence_service import SequenceService
 
 class BioForgeApp(ctk.CTk):
     """Main application shell."""
@@ -46,6 +47,13 @@ class BioForgeApp(ctk.CTk):
 
         self.sidebar = None
         self.page_container = None
+
+        # -------------------------
+        # Services
+        # -------------------------
+
+        self.sequence_service = SequenceService()
+        self.analysis_service = AnalysisService()
 
         # -------------------------
         # Pages
@@ -111,9 +119,17 @@ class BioForgeApp(ctk.CTk):
 
     def create_pages(self):
         """Create all application pages."""
+
         self.pages = {
-            "validation": ValidationPage(self.page_container),
-            "analysis": AnalysisPage(self.page_container),
+            "validation": ValidationPage(
+                self.page_container,
+                self.process_validation,
+                self.process_fasta
+            ),
+            "analysis": AnalysisPage(
+                self.page_container,
+                self.analysis_service
+            ),
         }
 
         for page in self.pages.values():
@@ -134,6 +150,39 @@ class BioForgeApp(ctk.CTk):
 
             if self.sidebar:
                 self.sidebar.set_active_page(page_name)
+
+    def process_validation(self, name: str, sequence: str):
+        """Process sequence validation."""
+
+        try:
+            sequence = self.sequence_service.validate_sequence(name,sequence)
+
+            self.pages["validation"].display_result(str(sequence))
+            self.pages["analysis"].set_sequence(sequence)
+
+        except ValueError as error:
+            self.pages["validation"].display_result(str(error))
+
+    def process_fasta(self, file_path: str):
+        """Process FASTA file loading."""
+
+        try:
+            sequences = self.sequence_service.load_sequences(file_path)
+
+            results = "\n\n".join(
+                str(sequence)
+                for sequence in sequences
+            )
+
+            self.pages["validation"].display_result(results)
+
+            if sequences:
+                self.pages["analysis"].set_sequence(
+                    sequences[0]
+                )
+
+        except ValueError as error:
+            self.pages["validation"].display_result(str(error))
 
 def main():
 

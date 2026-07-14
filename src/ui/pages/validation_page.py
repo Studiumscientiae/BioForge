@@ -19,7 +19,6 @@ Does not perform:
 
 import customtkinter as ctk
 from tkinter import filedialog
-from src.services.sequence_service import process_sequence, load_sequences
 from src.ui.theme import (LEFT_PANEL_PADX,LEFT_PANEL_PADY,
                           RIGHT_PANEL_PADX,RIGHT_PANEL_PADY,
                           LABEL_PADX, ENTRY_PADX, ENTRY_PADY,
@@ -35,8 +34,11 @@ from src.ui.theme import (LEFT_PANEL_PADX,LEFT_PANEL_PADY,
 
 class ValidationPage(ctk.CTkFrame):
 
-    def __init__(self, parent):
+    def __init__(self, parent, validate_callback, load_fasta_callback):
         super().__init__(parent)
+
+        self.validate_callback = validate_callback
+        self.load_fasta_callback = load_fasta_callback
 
         # Panels
         self.left_panel = None
@@ -232,21 +234,15 @@ class ValidationPage(ctk.CTkFrame):
     # -------------------------
 
     def process_input(self):
-        """Validate the current sequence."""
+        """Forward validation request to the application controller."""
 
-        name=self.name_entry.get()
-        sequence=self.sequence_text.get("1.0","end-1c")
+        name = self.name_entry.get()
+        sequence = self.sequence_text.get("1.0", "end-1c")
 
-        try:
-            result=process_sequence(name, sequence)
-
-            self.display_result(str(result))
-
-        except ValueError as error:
-            self.display_result(str(error))
+        self.validate_callback(name, sequence)
 
     def load_fasta(self):
-        """Load sequences from a FASTA file."""
+        """Forward FASTA loading request to the application controller."""
 
         file_path = filedialog.askopenfilename(
             title="Open FASTA file",
@@ -255,17 +251,11 @@ class ValidationPage(ctk.CTkFrame):
                 ("All files", "*.*")
             ]
         )
+
         if not file_path:
             return
 
-        try:
-            sequences = load_sequences(file_path)
-
-            results = "\n\n".join(str(sequence) for sequence in sequences)
-            self.display_result(results)
-
-        except ValueError as error:
-            self.display_result(str(error))
+        self.load_fasta_callback(file_path)
 
     # -------------------------
     # Utility Methods

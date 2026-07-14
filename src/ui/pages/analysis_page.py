@@ -27,14 +27,19 @@ from src.ui.theme import (CHECKBOX_PADX, CHECKBOX_PADY,
                           RESULT_TITLE_FONT, FRAME_PADY, FRAME_PADX,
                           SECTION_TITLE_PADX, SECTION_TITLE_PADY, FRAME_TOP_PADY)
 
+from src.analysis.analysis_service import AnalysisService
+from src.core.sequence import Sequence
 
 class AnalysisPage(ctk.CTkFrame):
     """
     Analysis workspace for BioForge.
     """
 
-    def __init__(self, parent):
+    def __init__(self, parent, analysis_service: AnalysisService):
         super().__init__(parent)
+
+        self.analysis_service = analysis_service
+        self.current_sequence = None
 
         # Panels
         self.left_panel = None
@@ -146,7 +151,7 @@ class AnalysisPage(ctk.CTkFrame):
                                            text="GC Content")
 
         self.nucleotide_checkbox = self.create_checkbox(self.statistics_frame,
-                                                   text="Nucleotide Count")
+                                                   text="Nucleotide Counts")
 
         self.weight_checkbox = self.create_checkbox(self.statistics_frame,
                                                "Molecular Weight",CHECKBOX_PADY_END)
@@ -218,14 +223,70 @@ class AnalysisPage(ctk.CTkFrame):
     def run_analysis(self):
         """Run the selected analyses."""
 
-        self.display_results(
-            "Analysis functionality will be available in v0.4.2.")
+        if self.current_sequence is None:
+            self.display_results("No sequence available for analysis.")
+            return
+
+        results = []
+
+        # Sequence Length
+        if self.length_checkbox.get():
+            length = self.analysis_service.sequence_length(self.current_sequence)
+            self.add_section(results, "Sequence Length")
+            results.append(f"{length} nt")
+            results.append("")
+
+        # GC Content
+        if self.gc_checkbox.get():
+            gc = self.analysis_service.gc_content(self.current_sequence)
+            self.add_section(results, "GC Content")
+            results.append(f"{gc:.2f} %")
+            results.append("")
+
+        # Base Counts
+        if self.nucleotide_checkbox.get():
+            counts = self.analysis_service.base_counts(self.current_sequence)
+
+            self.add_section(results, "Nucleotide Counts")
+
+            for base, count in counts.items():
+                results.append(f"{base} : {count}")
+            results.append("")
+
+            # Molecular Weight
+            if self.weight_checkbox.get():
+                weight = self.analysis_service.molecular_weight(
+                    self.current_sequence
+                )
+
+                self.add_section(results, "Molecular Weight")
+                results.append(f"{weight:.2f} Da")
+                results.append("")
+
+        if not results:
+            self.display_results("Please select at least one analysis.")
+            return
+
+        self.display_results("\n".join(results))
+
 
     # -------------------------
     # Utility Methods
     # -------------------------
 
-    def display_results(self, text):
+    def set_sequence(self, sequence: Sequence):
+        """Set the current sequence for analysis."""
+
+        self.current_sequence = sequence
+
+    def display_results(self, text: str):
         """Display analysis results."""
+
         self.result_panel.delete("1.0", "end")
         self.result_panel.insert("1.0", text)
+
+    def add_section(self, results: list[str], title: str):
+        """Append a titled results section."""
+
+        results.append(title)
+        results.append("-" * len(title))
