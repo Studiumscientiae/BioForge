@@ -4,6 +4,36 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [v0.4.2] - 2026-07-15
+
+### Added
+
+- WidgetFactory for consistent CustomTkinter widget creation
+- UIFactory for reusable generic UI sections
+- AnalysisFactory for analysis-specific UI construction
+- ValidationFactory for validation-specific UI construction
+- Molecular weight analysis using Biopython
+- Analysis workflow organized into modular analysis methods
+
+### Changed
+
+- Refactored AnalysisPage to delegate UI construction to factories
+- Refactored ValidationPage to delegate UI construction to factories
+- Replaced duplicated widget creation with reusable factory methods
+- Centralized widget styling through the shared theme configuration
+- Simplified page classes by separating UI construction from event handling
+
+### Improved
+
+- Cleaner layered UI architecture
+- Reduced code duplication across pages
+- Better separation of responsibilities between pages and factories
+- Easier maintenance and extension of the GUI
+- Improved readability and consistency of the UI codebase
+- Established a scalable foundation for future analysis and validation features
+
+---
+
 ## [v0.4.1] - 2026-07-13
 
 ### Added

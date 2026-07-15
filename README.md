@@ -2,27 +2,27 @@
 
 BioForge is a Python-based bioinformatics toolkit under active development, designed with a clean, modular, and extensible architecture.
 
-Version **0.4.1** introduces the project's core architecture, including biological sequence validation, sequence representation, FASTA file loader, a simple graphical user interface, and an application controller.
+Version **0.4.2** expands BioForge with its first sequence analysis capabilities while introducing a layered UI architecture based on reusable widget and page factories. The project now includes DNA sequence validation, sequence representation, FASTA file support, modular GUI workspaces, and core biological sequence analysis.
 
 The long-term goal of BioForge is to evolve into a comprehensive toolkit for biological sequence analysis, visualization, file handling, and AI-assisted bioinformatics workflows.
 
 ---
 ## Version
 
-**Current Version:** v0.4.1
+**Current Version:** v0.4.2
 
 ---
+## Development Notice
 🚧 BioForge is currently under active development.
 
-Version 0.4.1 establishes the application's modular GUI architecture and workspace foundation. The project now provides separate Validation and Analysis workspaces with a reusable navigation system and centralized UI theming.
+Version 0.4.2 extends the modular GUI architecture with reusable UI factories and introduces the first biological sequence analysis features, including sequence statistics, molecular weight calculation, sequence transformations, and central dogma operations.
 
-Biological analysis algorithms will be introduced in subsequent releases.
+BioForge continues to evolve toward a comprehensive toolkit for bioinformatics analysis and visualization.
 
 ---
 
 ## Features
-
-BioForge v0.4.1 includes
+BioForge v0.4.2 includes
 
 - DNA sequence validation
 - Sequence object creation
@@ -32,10 +32,26 @@ BioForge v0.4.1 includes
 - Multi-page CustomTkinter interface
 - Validation workspace
 - Analysis workspace
-- Reusable sidebar navigation
+- Sequence statistics
+  - Sequence length
+  - GC content
+  - Nucleotide counts
+  - Molecular weight
+- Sequence operations
+  - Reverse sequence
+  - Complement
+  - Reverse complement
+- Central dogma operations
+  - DNA → RNA transcription
+  - DNA → Protein translation
+- Reusable WidgetFactory
+- UIFactory
+- AnalysisFactory
+- ValidationFactory
 - Centralized UI theme system
 - Modular component architecture
 - Clean project structure
+
 ---
 ## Project Structure
 ``` text
@@ -44,7 +60,7 @@ BioForge/
 ├── src/
 │   ├── analysis/
 │   │   ├── __init__.py
-│   │   └── analysis_services.py
+│   │   └── analysis_service.py
 │   │
 │   ├── core/
 │   │   ├── sequence.py
@@ -81,12 +97,20 @@ BioForge/
 │       │   ├── about_dialog.py
 │       │   └── export_dialog.py
 │       │
+│       ├── factories/
+│       │   ├── __init__.py
+│       │   ├── analysis_factory.py
+│       │   ├── ui_factory.py
+│       │   ├── validation_factory.py
+│       │   └── widget_factory.py
+│       │
 │       └── pages/
 │           ├── __init__.py
 │           ├── analysis_page.py
 │           └── validation_page.py
 │
 ├── data/
+│   └── ten_sequences.fasta
 ├── docs/
 ├── reports/
 ├── tests/
@@ -130,11 +154,8 @@ python src/ui/cli.py
 
 - Python 3.11+
 - customtkinter 5.2.2 or later
+- biopython 1.87
 
----
-## Roadmap
-
-BioForge is developed incrementally, with each version introducing new functionality while maintaining a clean and modular architecture.
 
 ---
 
@@ -188,71 +209,100 @@ BioForge is developed incrementally, with each release building upon a clean, mo
 
 ---
 
-### v0.5.0 — Validation Workspace Implementation 🚧
+### v0.4.2 — Core Sequence Analysis ✅
 
-- Validation engine integration
-- Connect GUI with validation logic
+- WidgetFactory
+- UIFactory
+- AnalysisFactory
+- ValidationFactory
+- Sequence length
+- GC content
+- Nucleotide counts
+- Molecular weight
+
+---
+
+### v0.5.0 — Validation & Reporting 🚧
+
 - Validation report generation
 - Sequence cleaning tools
 - Invalid nucleotide detection
 - Automatic sequence normalization
 - Batch validation support
 - Validation statistics
+- Export improvements
 
 ---
 
-### v0.6.0 — Basic Sequence Analysis 📋
+### v0.5.0
 
-- GC content
-- Sequence length
-- Base composition (A, T, G, C)
-- Reverse complement
-- DNA → RNA transcription
-- DNA → Protein translation
-
----
-
-### v0.7.0 — Gene Feature Analysis 📋
+Advanced sequence analysis
 
 - Open Reading Frames (ORFs)
-- Reading frame analysis
-- Start codon detection
-- Stop codon detection
-- Longest ORF identification
+- Start/stop codons
+- Reading frames
 
 ---
 
-### v0.8.0 — Restriction Analysis 📋
+### v0.6.0
+
+Restriction analysis
 
 - Restriction enzyme database
-- Restriction site identification
-- Fragment prediction
-- Multiple enzyme analysis
+- Restriction site search
+
+(Biopython becomes very useful here.)
 
 ---
 
-### v0.9.0 — Motif & Pattern Analysis 📋
+### v0.7.0
+
+Motif analysis
 
 - Motif search
-- Consensus sequence generation
+- Consensus sequences
 - Pattern matching
-- Regular expression support
-- Degenerate nucleotide support
 
 ---
 
-### v1.0.0 — Stable Release 🎯
+### v0.8.0
 
-- Complete graphical interface
-- Validation workspace
-- Analysis toolkit
-- Gene feature analysis
-- Restriction analysis
-- Motif analysis
-- File I/O utilities
-- Export system
-- Comprehensive documentation
-- Unit tests
+Visualization
+
+- GC plots
+- Base composition charts
+- Sequence statistics
+- Matplotlib graphs
+
+---
+
+### v0.9.0
+
+Reporting
+
+- PDF report
+- CSV export
+- Excel export
+- HTML report
+
+---
+
+### v1.0.0
+
+Stable release
+
+Everything integrated:
+
+- GUI
+- FASTA support
+- GC content
+- ORFs
+- Restriction sites
+- Motif search
+- Graphs
+- Reports
+- Good documentation
+- Tests
 - Stable release
 
 ---
