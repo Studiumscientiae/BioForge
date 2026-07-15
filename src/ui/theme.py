@@ -3,6 +3,56 @@ Central UI theme configuration for BioForge.
 """
 
 # ==========================================================
+# Typography
+# ==========================================================
+
+TITLE_FONT_SIZE = 24
+SUBTITLE_FONT_SIZE = 12
+FOOTER_FONT_SIZE = 12
+
+SECTION_TITLE_FONT = ("Arial", 16, "bold")
+RESULT_TITLE_FONT = ("Arial", 20, "bold")
+
+
+# ==========================================================
+# Widget Styles
+# ==========================================================
+
+# Frames
+
+FRAME_CORNER_RADIUS = 10
+
+# Buttons
+
+BUTTON_WIDTH = 140
+BUTTON_HEIGHT = 36
+BUTTON_CORNER_RADIUS = 8
+
+# Entries
+
+ENTRY_HEIGHT = 36
+
+# Comboboxes
+
+COMBOBOX_HEIGHT = 36
+
+# Textboxes
+
+TEXTBOX_HEIGHT = 250
+
+
+# ==========================================================
+# Common Spacing
+# ==========================================================
+
+SPACE_XS = 2
+SPACE_SM = 5
+SPACE_MD = 10
+SPACE_LG = 15
+SPACE_XL = 20
+
+
+# ==========================================================
 # Sidebar
 # ==========================================================
 
@@ -13,27 +63,21 @@ SIDEBAR_CORNER_RADIUS = 12
 
 NAV_BUTTON_HEIGHT = 40
 NAV_BUTTON_CORNER_RADIUS = 8
-NAV_BUTTON_PADDING_Y = 4
+NAV_BUTTON_PADDING_Y = SPACE_SM
 
 ACTIVE_BUTTON_COLOR = ("gray70", "gray30")
 INACTIVE_BUTTON_COLOR = ("gray25", "gray25")
 
-# Sidebar Text
+# Sidebar Layout
 
-TITLE_FONT_SIZE = 24
-SUBTITLE_FONT_SIZE = 12
-FOOTER_FONT_SIZE = 12
+LOGO_PADDING_X = SPACE_LG
+LOGO_PADDING_Y = (SPACE_XL, SPACE_MD)
 
-# Sidebar Spacing
+NAVIGATION_PADDING_X = SPACE_MD
+NAVIGATION_PADDING_Y = SPACE_MD
 
-LOGO_PADDING_X = 15
-LOGO_PADDING_Y = (20, 10)
-
-NAVIGATION_PADDING_X = 10
-NAVIGATION_PADDING_Y = 10
-
-FOOTER_PADDING_X = 15
-FOOTER_PADDING_Y = (10, 20)
+FOOTER_PADDING_X = SPACE_LG
+FOOTER_PADDING_Y = (SPACE_MD, SPACE_XL)
 
 
 # ==========================================================
@@ -42,65 +86,62 @@ FOOTER_PADDING_Y = (10, 20)
 
 # Layout
 
-LEFT_PANEL_PADX = (10, 5)
-LEFT_PANEL_PADY = 10
+LEFT_PANEL_PADX = (SPACE_MD, SPACE_SM)
+LEFT_PANEL_PADY = SPACE_MD
 
-RIGHT_PANEL_PADX = (5, 10)
-RIGHT_PANEL_PADY = 10
+RIGHT_PANEL_PADX = (SPACE_SM, SPACE_MD)
+RIGHT_PANEL_PADY = SPACE_MD
 
 # Section Frames
 
-FRAME_PADX = 15
-FRAME_PADY = 10
-FRAME_TOP_PADY = (15, 10)
+FRAME_PADX = SPACE_LG
+FRAME_PADY = SPACE_MD
+FRAME_TOP_PADY = (SPACE_LG, SPACE_MD)
 
 # Section Titles
 
-SECTION_TITLE_FONT = ("Arial", 16, "bold")
-
-SECTION_TITLE_PADX = 10
-SECTION_TITLE_PADY = (10, 5)
+SECTION_TITLE_PADX = SPACE_MD
+SECTION_TITLE_PADY = (SPACE_MD, SPACE_SM)
 
 # Checkboxes
 
-CHECKBOX_PADX = 15
-CHECKBOX_PADY = 2
-CHECKBOX_PADY_END = (2, 10)
+CHECKBOX_PADX = SPACE_LG
+CHECKBOX_PADY = SPACE_XS
+CHECKBOX_PADY_END = (SPACE_XS, SPACE_MD)
 
-# Action Button
+# Action Buttons
 
-ACTION_BUTTON_PADX = 15
-ACTION_BUTTON_PADY = (15, 15)
+ACTION_BUTTON_PADX = SPACE_LG
+ACTION_BUTTON_PADY = (SPACE_LG, SPACE_LG)
 
 # Result Panel
 
-RESULT_TITLE_FONT = ("Arial", 20, "bold")
+RESULT_TITLE_PADX = SPACE_LG
+RESULT_TITLE_PADY = (SPACE_LG, SPACE_MD)
 
-RESULT_TITLE_PADX = 15
-RESULT_TITLE_PADY = (15, 10)
+RESULT_PANEL_PADX = SPACE_LG
+RESULT_PANEL_PADY = (0, SPACE_LG)
 
-RESULT_PANEL_PADX = 15
-RESULT_PANEL_PADY = (0, 15)
+# Labels
 
-LABEL_PADX = 15
+LABEL_PADX = SPACE_LG
 
 # Entries
 
-ENTRY_PADX = 15
-ENTRY_PADY = (5, 15)
+ENTRY_PADX = SPACE_LG
+ENTRY_PADY = (SPACE_SM, SPACE_LG)
 
-# Combobox
+# Comboboxes
 
-COMBOBOX_PADX = 15
-COMBOBOX_PADY = (5, 20)
+COMBOBOX_PADX = SPACE_LG
+COMBOBOX_PADY = (SPACE_SM, SPACE_XL)
 
 # Textboxes
 
-TEXTBOX_PADX = 15
-TEXTBOX_PADY = (5, 15)
-TEXTBOX_HEIGHT = 250
+TEXTBOX_PADX = SPACE_LG
+TEXTBOX_PADY = (SPACE_SM, SPACE_LG)
 
 # Buttons
 
-BUTTON_PADY = 5
-BUTTON_PADY_END = (5, 20)
+BUTTON_PADY = SPACE_SM
+BUTTON_PADY_END = (SPACE_SM, SPACE_XL)

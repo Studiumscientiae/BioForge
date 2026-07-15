@@ -78,6 +78,7 @@ class BioForgeApp(ctk.CTk):
 
     def create_layout(self):
         """Create the main application layout."""
+
         self.grid_rowconfigure(0, weight=1)
 
         # Sidebar column

@@ -19,17 +19,11 @@ Does not perform:
 
 import customtkinter as ctk
 from tkinter import filedialog
-from src.ui.theme import (LEFT_PANEL_PADX,LEFT_PANEL_PADY,
-                          RIGHT_PANEL_PADX,RIGHT_PANEL_PADY,
-                          LABEL_PADX, ENTRY_PADX, ENTRY_PADY,
-                          COMBOBOX_PADX, COMBOBOX_PADY,
-                          TEXTBOX_PADX, TEXTBOX_PADY,
-                          TEXTBOX_HEIGHT, BUTTON_PADY,
-                          BUTTON_PADY_END, ACTION_BUTTON_PADX,
-                          RESULT_TITLE_FONT,SECTION_TITLE_PADY,
-                          RESULT_TITLE_PADX, RESULT_TITLE_PADY,
-                          RESULT_PANEL_PADX, RESULT_PANEL_PADY
-                          )
+
+from src.ui.factories.ui_factory import UIFactory
+from src.ui.factories.validation_factory import ValidationFactory
+
+from src.ui import theme
 
 
 class ValidationPage(ctk.CTkFrame):
@@ -73,11 +67,11 @@ class ValidationPage(ctk.CTkFrame):
 
         # Left workspace panel
         self.left_panel = ctk.CTkFrame(self)
-        self.left_panel.grid(row=0,column=0,sticky="nsew",padx=LEFT_PANEL_PADX,pady=LEFT_PANEL_PADY)
+        self.left_panel.grid(row=0,column=0,sticky="nsew",padx=theme.LEFT_PANEL_PADX,pady=theme.LEFT_PANEL_PADY)
 
         # Right workspace panel
         self.right_panel = ctk.CTkFrame(self)
-        self.right_panel.grid(row=0,column=1,sticky="nsew",padx=RIGHT_PANEL_PADX,pady=RIGHT_PANEL_PADY)
+        self.right_panel.grid(row=0,column=1,sticky="nsew",padx=theme.RIGHT_PANEL_PADX,pady=theme.RIGHT_PANEL_PADY)
 
     # -------------------------
     # Left Panel
@@ -88,111 +82,35 @@ class ValidationPage(ctk.CTkFrame):
 
         self.left_panel.grid_columnconfigure(0, weight=1)
 
-        self.create_sequence_selector()
-        self.create_action_buttons()
-        self.create_input_section()
-
-    def create_label(self, parent, text):
-        """Create a standard form label."""
-
-        label = ctk.CTkLabel(parent, text=text)
-        label.pack(anchor="w", padx=LABEL_PADX)
-
-        return label
-
-    def create_entry(self, parent, placeholder):
-        """Create and pack a standard entry widget."""
-
-        entry = ctk.CTkEntry(parent,
-                             placeholder_text=placeholder)
-
-        entry.pack(fill="x",padx=ENTRY_PADX,pady=ENTRY_PADY)
-
-        return entry
-
-    def create_button(self, parent, text, command=None, pady=BUTTON_PADY):
-        """Create and pack a standard button."""
-
-        button = ctk.CTkButton(parent,
-                               text=text,
-                               command=command)
-
-        button.pack(fill="x",padx=ACTION_BUTTON_PADX,pady=pady)
-
-        return button
-
-    def create_combobox(self, parent, values):
-        """Create and pack a standard combobox."""
-
-        combobox = ctk.CTkComboBox(parent,
-                                   values=values)
-
-        combobox.pack(fill="x",padx=COMBOBOX_PADX,pady=COMBOBOX_PADY)
-
-        return combobox
-
-    def create_textbox(self, parent, height):
-        """Create and pack a standard textbox."""
-
-        textbox = ctk.CTkTextbox(parent,
-                                 height=height)
-
-        textbox.pack(fill="both",expand=True,padx=TEXTBOX_PADX,pady=TEXTBOX_PADY)
-
-        return textbox
-
-    def create_sequence_selector(self):
-        """Build the sequence selection controls."""
-
-        title = ctk.CTkLabel(self.left_panel,
-                             text="Sequence Validation",
-                             font=RESULT_TITLE_FONT)
-
-        title.pack(pady=SECTION_TITLE_PADY)
-
-        self.create_label(self.left_panel, "Loaded Sequences")
-
-        self.sequence_selector = self.create_combobox(
-            self.left_panel,
-            ["No sequences loaded"]
+        selector_frame, selector = (
+            ValidationFactory.create_sequence_selector(
+                self.left_panel
+            )
         )
 
-    def create_action_buttons(self):
-        """Load FASTA, Validate and Validate All buttons."""
-
-        self.load_button = self.create_button(
-            self.left_panel,
-            "Load FASTA",
-            command=self.load_fasta
+        selector_frame.pack(
+            fill="x",
+            padx=theme.FRAME_PADX,
+            pady=theme.FRAME_TOP_PADY,
         )
 
-        self.validate_button = self.create_button(
+        self.sequence_selector = selector["selector"]
+
+        (
+            self.load_button,
+            self.validate_button,
+            self.validate_all_button,
+        ) = ValidationFactory.create_action_section(
             self.left_panel,
-            "Validate",
-            command=self.process_input
+            load_callback=self.load_fasta,
+            validate_callback=self.process_input,
         )
 
-        self.validate_all_button = self.create_button(
+        (
+            self.name_entry,
+            self.sequence_text,
+        ) = ValidationFactory.create_input_section(
             self.left_panel,
-            "Validate All",
-            pady=BUTTON_PADY_END
-        )
-
-    def create_input_section(self):
-        """Sequence name and sequence input."""
-
-        self.create_label(self.left_panel, "Sequence Name")
-
-        self.name_entry = self.create_entry(
-            self.left_panel,
-            "Enter sequence name"
-        )
-
-        self.create_label(self.left_panel, "Sequence Input")
-
-        self.sequence_text = self.create_textbox(
-            self.left_panel,
-            TEXTBOX_HEIGHT
         )
 
 
@@ -201,33 +119,25 @@ class ValidationPage(ctk.CTkFrame):
     # -------------------------
 
     def create_right_panel(self):
-        """Build the results workspace."""
+        """Build the validation results workspace."""
 
         self.right_panel.grid_columnconfigure(0, weight=1)
         self.right_panel.grid_rowconfigure(1, weight=1)
 
-        self.create_result_title("Validation Results")
-        self.create_result_box()
+        panel, _, self.result_box = UIFactory.create_result_panel(
+            self.right_panel,
+            title="Validation Results",
+        )
 
-    def create_result_title(self, text):
-        """Create the results panel title."""
+        panel.grid(
+            row=0,
+            column=0,
+            rowspan=2,
+            sticky="nsew",
+            padx=theme.RESULT_PANEL_PADX,
+            pady=theme.RESULT_PANEL_PADY,
+        )
 
-        title = ctk.CTkLabel(self.right_panel,
-                             text=text,
-                             font=RESULT_TITLE_FONT)
-
-        title.grid(row=0, column=0, padx=RESULT_TITLE_PADX, pady=RESULT_TITLE_PADY, sticky="w")
-
-        return title
-
-    def create_result_box(self):
-        """Create the results textbox."""
-
-        self.result_box = ctk.CTkTextbox(self.right_panel)
-
-        self.result_box.grid(row=1,column=0,sticky="nsew",padx=RESULT_PANEL_PADX,pady=RESULT_PANEL_PADY)
-
-        return self.result_box
 
     # -------------------------
     # Event Handlers
