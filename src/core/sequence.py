@@ -30,6 +30,16 @@ class Sequence:
 
         return len(self.sequence)
 
+    def gc_content(self) -> float:
+        """Return GC content as a percentage."""
+
+        return gc_fraction(self.sequence)* 100
+
+    def at_content(self) -> float:
+        """Return AT content as a percentage."""
+
+        return (1 - gc_fraction(self.sequence)) * 100
+
     def base_counts(self) -> dict[str, int]:
         """Return nucleotide counts."""
 
@@ -40,21 +50,34 @@ class Sequence:
             "C": self.sequence.count("C"),
         }
 
-    def gc_content(self) -> float:
-        """Return GC content as a percentage."""
-
-        return gc_fraction(self.sequence)* 100
-
     def molecular_weight(self) -> float:
         """Return the molecular weight of the sequence."""
 
         return molecular_weight(self.sequence,
                                 seq_type="DNA")
 
+    def reverse(self) -> Seq:
+        """Return the reversed sequence.
+        [read sequence backward]"""
+
+        return self.sequence[::-1]
+
+    def complement(self) -> Seq:
+        """Return the complement of the sequence.
+        [A⇆T & G⇆C]"""
+
+        return self.sequence.complement()
+
+    def reverse_complement(self) -> Seq:
+        """Return the reverse complement of the sequence.
+        [Create and read the complement backward]"""
+
+        return self.sequence.reverse_complement()
+
     def __str__(self) -> str:
         """Return string representation of Biological sequence."""
 
-        return(
+        return (
             f"Sequence Name: {self.name}\n"
             f"Sequence: {self.sequence}\n"
             f"Length: {self.length} bases"

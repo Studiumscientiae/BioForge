@@ -56,6 +56,7 @@ class AnalysisPage(ctk.CTkFrame):
         # Statistics
         self.length_checkbox = None
         self.gc_checkbox = None
+        self.at_checkbox = None
         self.nucleotide_checkbox = None
         self.weight_checkbox = None
 
@@ -120,6 +121,7 @@ class AnalysisPage(ctk.CTkFrame):
 
         self.length_checkbox = statistics["length"]
         self.gc_checkbox = statistics["gc"]
+        self.at_checkbox = statistics["at"]
         self.nucleotide_checkbox = statistics["nucleotide"]
         self.weight_checkbox = statistics["weight"]
 
@@ -211,7 +213,7 @@ class AnalysisPage(ctk.CTkFrame):
 
         # Sequence Length
         if self.length_checkbox.get():
-            length = self.analysis_service.sequence_length(
+            length = self.analysis_service.get_sequence_length(
                 self.current_sequence
             )
 
@@ -222,7 +224,7 @@ class AnalysisPage(ctk.CTkFrame):
 
         # GC Content
         if self.gc_checkbox.get():
-            gc = self.analysis_service.gc_content(
+            gc = self.analysis_service.get_gc_content(
                 self.current_sequence
             )
 
@@ -231,9 +233,20 @@ class AnalysisPage(ctk.CTkFrame):
                 f"{gc:.2f} %",
             )
 
+        # AT Content
+        if self.at_checkbox.get():
+            at = self.analysis_service.get_at_content(
+                self.current_sequence
+            )
+
+            self.append_result(results,
+                "AT Content",
+                f"{at:.2f} %",
+            )
+
         # Nucleotide Counts
         if self.nucleotide_checkbox.get():
-            counts = self.analysis_service.base_counts(self.current_sequence)
+            counts = self.analysis_service.get_base_counts(self.current_sequence)
 
             self.add_section(results, "Nucleotide Counts")
 
@@ -244,7 +257,7 @@ class AnalysisPage(ctk.CTkFrame):
 
         # Molecular Weight
         if self.weight_checkbox.get():
-            weight = self.analysis_service.molecular_weight(
+            weight = self.analysis_service.get_molecular_weight(
                 self.current_sequence
             )
 
@@ -256,7 +269,38 @@ class AnalysisPage(ctk.CTkFrame):
     def analyze_sequence_operations(self,results: list[str],):
         """Run selected sequence transformations."""
 
-        pass
+        if self.reverse_checkbox.get():
+            reverse = self.analysis_service.get_reverse(
+                self.current_sequence
+            )
+
+            self.append_result(results,
+                "Reverse",
+                str(reverse),
+            )
+
+        if self.complement_checkbox.get():
+            complement = self.analysis_service.get_complement(
+                self.current_sequence
+            )
+
+            self.append_result(results,
+                "Complement",
+                str(complement),
+            )
+
+        if self.reverse_complement_checkbox.get():
+            reverse_complement = (
+                self.analysis_service.get_reverse_complement(
+                    self.current_sequence
+                )
+            )
+
+            self.append_result(
+                results,
+                "Reverse Complement",
+                str(reverse_complement),
+            )
 
     def analyze_central_dogma(self,results: list[str],):
         """Run selected Central Dogma analyses."""

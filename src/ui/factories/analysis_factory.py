@@ -51,6 +51,11 @@ class AnalysisFactory:
             text="GC Content",
         )
 
+        at_checkbox = WidgetFactory.create_checkbox(
+            frame,
+            text="AT Content",
+        )
+
         nucleotide_checkbox = WidgetFactory.create_checkbox(
             frame,
             text="Nucleotide Counts",
@@ -64,6 +69,7 @@ class AnalysisFactory:
         checkboxes = [
             length_checkbox,
             gc_checkbox,
+            at_checkbox,
             nucleotide_checkbox,
         ]
 
@@ -83,6 +89,7 @@ class AnalysisFactory:
         return frame, {
             "length": length_checkbox,
             "gc": gc_checkbox,
+            "at": at_checkbox,
             "nucleotide": nucleotide_checkbox,
             "weight": weight_checkbox,
         }
@@ -114,23 +121,22 @@ class AnalysisFactory:
             text="Reverse Complement",
         )
 
-        reverse_checkbox.pack(
-            anchor="w",
-            padx=theme.CHECKBOX_PADX,
-            pady=theme.CHECKBOX_PADY,
-        )
+        controls = [
+            reverse_checkbox,
+            complement_checkbox,
+            reverse_complement_checkbox,
+        ]
 
-        complement_checkbox.pack(
-            anchor="w",
-            padx=theme.CHECKBOX_PADX,
-            pady=theme.CHECKBOX_PADY,
-        )
-
-        reverse_complement_checkbox.pack(
-            anchor="w",
-            padx=theme.CHECKBOX_PADX,
-            pady=theme.CHECKBOX_PADY_END,
-        )
+        for i, checkbox in enumerate(controls):
+            checkbox.pack(
+                anchor="w",
+                padx=theme.CHECKBOX_PADX,
+                pady=(
+                    theme.CHECKBOX_PADY_END
+                    if i == len(controls) - 1
+                    else theme.CHECKBOX_PADY
+                ),
+            )
 
         return frame, {
             "reverse": reverse_checkbox,

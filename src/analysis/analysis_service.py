@@ -18,6 +18,7 @@ Does not perform:
 - Analysis algorithms
 """
 
+from Bio.Seq import Seq
 from src.core.sequence import Sequence
 
 class AnalysisService:
@@ -25,22 +26,42 @@ class AnalysisService:
     Coordinates biological analyses.
     """
 
-    def sequence_length(self,sequence: Sequence) -> int:
+    def get_sequence_length(self,sequence: Sequence) -> int:
         """Coordinate sequence length analysis for a biological sequence."""
 
         return sequence.length
 
-    def base_counts(self, sequence: Sequence) -> dict[str, int]:
-        """Coordinate nucleotide base count analysis for a biological sequence."""
-
-        return sequence.base_counts()
-
-    def gc_content(self, sequence: Sequence) -> float:
+    def get_gc_content(self, sequence: Sequence) -> float:
         """Coordinate GC content analysis for a biological sequence."""
 
         return sequence.gc_content()
 
-    def molecular_weight(self, sequence: Sequence) -> float:
+    def get_at_content(self, sequence: Sequence) -> float:
+        """Coordinate AT content analysis for a biological sequence."""
+
+        return sequence.at_content()
+
+    def get_base_counts(self, sequence: Sequence) -> dict[str, int]:
+        """Coordinate nucleotide base count analysis for a biological sequence."""
+
+        return sequence.base_counts()
+
+    def get_molecular_weight(self, sequence: Sequence) -> float:
         """Calculate molecular weight."""
 
         return sequence.molecular_weight()
+
+    def get_reverse(self, sequence: Sequence) -> Seq:
+        """Coordinate sequence reverse operation."""
+
+        return sequence.reverse()
+
+    def get_complement(self, sequence: Sequence) -> Seq:
+        """Coordinate sequence complement operation."""
+
+        return sequence.complement()
+
+    def get_reverse_complement(self, sequence: Sequence) -> Seq:
+        """Coordinate sequence reverse complement operation."""
+
+        return sequence.reverse_complement()
