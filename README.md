@@ -222,18 +222,6 @@ BioForge is developed incrementally, with each release building upon a clean, mo
 
 ---
 
-### v0.5.0 — Validation & Reporting 🚧
-
-- Validation report generation
-- Sequence cleaning tools
-- Invalid nucleotide detection
-- Automatic sequence normalization
-- Batch validation support
-- Validation statistics
-- Export improvements
-
----
-
 ### v0.5.0
 
 Advanced sequence analysis
