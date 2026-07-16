@@ -15,7 +15,9 @@ Does NOT perform:
 
 class Validator:
     """Validates biological sequences."""
-    DNA_BASES={"A","T","G","C"}
+    IUPAC_DNA_BASES = {
+        "A", "T", "G", "C",
+    }
 
     @classmethod
     def is_valid_dna(cls,sequence: str) -> bool:
@@ -38,5 +40,5 @@ class Validator:
         if not sequence:
             return False
 
-        return all(base in cls.DNA_BASES for base in sequence)
+        return all(base in cls.IUPAC_DNA_BASES for base in sequence)
 

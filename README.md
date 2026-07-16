@@ -2,55 +2,66 @@
 
 BioForge is a Python-based bioinformatics toolkit under active development, designed with a clean, modular, and extensible architecture.
 
-Version **0.4.2** expands BioForge with its first sequence analysis capabilities while introducing a layered UI architecture based on reusable widget and page factories. The project now includes DNA sequence validation, sequence representation, FASTA file support, modular GUI workspaces, and core biological sequence analysis.
+Version **0.4.3** expands BioForge with DNA sequence transformation capabilities, adding reverse, complement, reverse complement, and AT content analysis alongside the existing sequence statistics. The project now provides a modular multi-page GUI, FASTA support, reusable UI factories, and a growing collection of core bioinformatics analysis tools.
 
 The long-term goal of BioForge is to evolve into a comprehensive toolkit for biological sequence analysis, visualization, file handling, and AI-assisted bioinformatics workflows.
 
 ---
 ## Version
 
-**Current Version:** v0.4.2
+**Current Version:** v0.4.3
 
 ---
 ## Development Notice
 🚧 BioForge is currently under active development.
 
-Version 0.4.2 extends the modular GUI architecture with reusable UI factories and introduces the first biological sequence analysis features, including sequence statistics, molecular weight calculation, sequence transformations, and central dogma operations.
+Version **0.4.3** extends the biological analysis toolkit with DNA sequence transformation operations, including reverse, complement, reverse complement, and AT content analysis. This release also introduces comprehensive unit testing across the core domain and service layer, strengthening the project's reliability while maintaining its modular architecture.
 
-BioForge continues to evolve toward a comprehensive toolkit for bioinformatics analysis and visualization.
+BioForge continues to evolve toward a comprehensive toolkit for biological sequence analysis, visualization, file handling, and AI-assisted bioinformatics workflows.
 
 ---
 
 ## Features
-BioForge v0.4.2 includes
+BioForge v0.4.3 includes
 
+Core
 - DNA sequence validation
 - Sequence object creation
 - FASTA file parsing
 - File loading system
 - File writing utilities
+
+GUI
 - Multi-page CustomTkinter interface
 - Validation workspace
 - Analysis workspace
-- Sequence statistics
-  - Sequence length
-  - GC content
-  - Nucleotide counts
-  - Molecular weight
-- Sequence operations
-  - Reverse sequence
-  - Complement
-  - Reverse complement
-- Central dogma operations
-  - DNA → RNA transcription
-  - DNA → Protein translation
-- Reusable WidgetFactory
+- Sidebar navigation
+
+Sequence Statistics
+- Sequence length
+- GC content
+- AT content
+- Nucleotide counts
+- Molecular weight
+
+Sequence Operations
+- Reverse sequence
+- Complement
+- Reverse complement
+
+Architecture
+- WidgetFactory
 - UIFactory
 - AnalysisFactory
 - ValidationFactory
 - Centralized UI theme system
 - Modular component architecture
 - Clean project structure
+
+Testing
+- Sequence model unit tests
+- Validator unit tests
+- AnalysisService unit tests
 
 ---
 ## Project Structure
@@ -114,6 +125,9 @@ BioForge/
 ├── docs/
 ├── reports/
 ├── tests/
+│   ├── test_analysis_service.py
+│   ├── test_sequence.py
+│   └── test_validator.py
 │
 ├── README.md
 ├── CHANGELOG.md
@@ -155,6 +169,7 @@ python src/ui/cli.py
 - Python 3.11+
 - customtkinter 5.2.2 or later
 - biopython 1.87
+- pytest 9.1.1 or later
 
 
 ---
@@ -222,13 +237,30 @@ BioForge is developed incrementally, with each release building upon a clean, mo
 
 ---
 
+### v0.4.3 — Sequence Operations ✅
+
+- AT content
+- Reverse sequence
+- Complement
+- Reverse complement
+- Expanded Analysis workspace
+- Automated unit testing
+
+---
+
 ### v0.5.0
 
 Advanced sequence analysis
 
+- IUPAC DNA support
+- RNA transcription
+- Protein translation
+- Codon usage
+- Codon frequency
 - Open Reading Frames (ORFs)
-- Start/stop codons
-- Reading frames
+- Start codon identification
+- Stop codon identification
+- Reading frame analysis
 
 ---
 
@@ -283,7 +315,8 @@ Everything integrated:
 
 - GUI
 - FASTA support
-- GC content
+- Sequence statistics 
+- Sequence operations
 - ORFs
 - Restriction sites
 - Motif search

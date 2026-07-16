@@ -4,6 +4,34 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [v0.4.3] - 2026-07-16
+
+### Added
+
+- DNA sequence reverse operation
+- DNA complement operation
+- DNA reverse complement operation
+- AT content calculation
+- AnalysisService support for sequence transformation operations
+- Unit tests for the Sequence model
+- Unit tests for the DNA validator
+- Unit tests for the AnalysisService
+
+### Changed
+
+- Extended the Analysis workspace with AT content analysis
+- Integrated sequence transformation operations into the Analysis workflow
+- Expanded the analysis interface to support additional DNA sequence operations
+
+### Improved
+
+- Increased automated test coverage across the core domain and service layer
+- Improved reliability of sequence analysis features through unit testing
+- Enhanced maintainability of the analysis pipeline with comprehensive verification
+- Strengthened the foundation for future biological sequence analysis features
+
+---
+
 ## [v0.4.2] - 2026-07-15
 
 ### Added
