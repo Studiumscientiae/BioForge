@@ -305,7 +305,27 @@ class AnalysisPage(ctk.CTkFrame):
     def analyze_central_dogma(self,results: list[str],):
         """Run selected Central Dogma analyses."""
 
-        pass
+        if self.transcription_checkbox.get():
+            transcript = self.analysis_service.get_transcribe(
+                self.current_sequence
+            )
+
+            self.append_result(
+                results,
+                "Transcription (mRNA)",
+                str(transcript),
+            )
+
+        if self.translation_checkbox.get():
+            protein = self.analysis_service.get_translate(
+                self.current_sequence
+            )
+
+            self.append_result(
+                results,
+                "Translation (Protein)",
+                str(protein),
+            )
 
     # -------------------------
     # Utility Methods
@@ -326,7 +346,7 @@ class AnalysisPage(ctk.CTkFrame):
         """Append a titled results section."""
 
         results.append(title)
-        results.append("-" * len(title))
+        results.append("-" * 134)
 
     def append_result(self,results: list[str],title: str,value: str,):
         """Append a formatted analysis result."""

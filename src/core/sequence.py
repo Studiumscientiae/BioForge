@@ -24,6 +24,15 @@ class Sequence:
         self.name= name
         self.sequence= Seq(sequence.upper().strip())
 
+    def __str__(self) -> str:
+        """Return string representation of Biological sequence."""
+
+        return (
+            f"Sequence Name: {self.name}\n"
+            f"Sequence: {self.sequence}\n"
+            f"Length: {self.length} bases"
+        )
+
     @ property
     def length(self) -> int:
         """Return the length of a Biological sequence."""
@@ -74,11 +83,13 @@ class Sequence:
 
         return self.sequence.reverse_complement()
 
-    def __str__(self) -> str:
-        """Return string representation of Biological sequence."""
+    def transcribe(self) -> Seq:
+        """Return the RNA transcript of the DNA sequence."""
 
-        return (
-            f"Sequence Name: {self.name}\n"
-            f"Sequence: {self.sequence}\n"
-            f"Length: {self.length} bases"
-        )
+        return str(self.sequence.transcribe())
+
+    def translate(self) -> Seq:
+        """Return the protein translated from the DNA sequence."""
+
+        rna = self.sequence.transcribe()
+        return str(rna.translate())

@@ -65,3 +65,13 @@ class AnalysisService:
         """Coordinate sequence reverse complement operation."""
 
         return sequence.reverse_complement()
+
+    def get_transcribe(self, sequence: Sequence) -> Seq:
+        """Coordinate sequence transcription operation."""
+
+        return sequence.transcribe()
+
+    def get_translate(self, sequence: Sequence) -> Seq:
+        """Coordinate sequence translation operation."""
+
+        return sequence.translate()
