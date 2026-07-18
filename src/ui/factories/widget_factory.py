@@ -82,13 +82,16 @@ class WidgetFactory:
                                **kwargs,)
 
     @staticmethod
-    def create_combobox(parent, *, values=None,**kwargs) -> ctk.CTkComboBox:
+    def create_combobox(parent,*,values: list[str] | None = None,state: str = "normal",**kwargs,) -> ctk.CTkComboBox:
         """Create a themed combobox."""
 
-        return ctk.CTkComboBox(parent,
-                               values=[] if values is None else values,
-                               height=theme.COMBOBOX_HEIGHT,
-                               **kwargs,)
+        return ctk.CTkComboBox(
+            parent,
+            values=[] if values is None else values,
+            state=state,
+            height=theme.COMBOBOX_HEIGHT,
+            **kwargs,
+        )
 
     @staticmethod
     def create_scrollable_frame(parent, **kwargs) -> ctk.CTkScrollableFrame:

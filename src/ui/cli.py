@@ -27,6 +27,7 @@ from src.ui.pages.validation_page import ValidationPage
 from src.ui.pages.analysis_page import AnalysisPage
 from src.analysis.analysis_service import AnalysisService
 from src.services.sequence_service import SequenceService
+from src.services.codon_usage_service import CodonUsageService
 
 class BioForgeApp(ctk.CTk):
     """Main application shell."""
@@ -54,6 +55,7 @@ class BioForgeApp(ctk.CTk):
 
         self.sequence_service = SequenceService()
         self.analysis_service = AnalysisService()
+        self.codon_usage_service = CodonUsageService()
 
         # -------------------------
         # Pages
@@ -129,7 +131,8 @@ class BioForgeApp(ctk.CTk):
             ),
             "analysis": AnalysisPage(
                 self.page_container,
-                self.analysis_service
+                self.analysis_service,
+                self.codon_usage_service
             ),
         }
 

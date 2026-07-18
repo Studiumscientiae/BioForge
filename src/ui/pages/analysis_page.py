@@ -20,6 +20,7 @@ import customtkinter as ctk
 from src.ui import theme
 
 from src.analysis.analysis_service import AnalysisService
+from src.services.codon_usage_service import CodonUsageService
 from src.core.sequence import Sequence
 
 from src.ui.factories.analysis_factory import AnalysisFactory
@@ -31,10 +32,11 @@ class AnalysisPage(ctk.CTkFrame):
     Analysis workspace for BioForge.
     """
 
-    def __init__(self, parent, analysis_service: AnalysisService):
+    def __init__(self, parent, analysis_service: AnalysisService,codon_usage_service: CodonUsageService):
         super().__init__(parent)
 
         self.analysis_service = analysis_service
+        self.codon_usage_service = codon_usage_service
         self.current_sequence = None
 
         # Panels
@@ -75,6 +77,7 @@ class AnalysisPage(ctk.CTkFrame):
         # Codon analysis
         self.codon_usage_checkbox = None
         self.codon_frequency_checkbox = None
+        self.organism_selector = None
 
         # Results
         self.result_panel = None
@@ -164,11 +167,22 @@ class AnalysisPage(ctk.CTkFrame):
         self.translation_checkbox = gene["translation"]
 
         # Codon Analysis
-        self.codon_analysis_frame, codon = (
-            AnalysisFactory.create_codon_analysis_section(
-                self.left_panel
-            )
+        (
+            self.codon_analysis_frame,
+            codon,
+            self.organism_selector,
+        ) = AnalysisFactory.create_codon_analysis_section(
+            self.left_panel
         )
+
+        organisms = self.codon_usage_service.list_organisms()
+
+        if organisms:
+            self.organism_selector.configure(values=organisms)
+            self.organism_selector.set(organisms[0])
+        else:
+            self.organism_selector.configure(values=["No datasets found"])
+            self.organism_selector.set("No datasets found")
 
         self.codon_analysis_frame.pack(
             fill="x",

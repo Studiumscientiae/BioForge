@@ -193,11 +193,37 @@ class AnalysisFactory:
     # --------------------------------------------------
 
     @staticmethod
-    def create_codon_analysis_section(parent,) -> tuple[ctk.CTkFrame, dict[str, ctk.CTkCheckBox]]:
+    def create_codon_analysis_section(parent,) -> tuple[
+            ctk.CTkFrame,
+            dict[str, ctk.CTkCheckBox],
+            ctk.CTkComboBox,
+        ]:
 
         frame, _ = UIFactory.create_section_frame(
             parent,
             title="Codon Analysis",
+        )
+
+        reference_label = WidgetFactory.create_label(
+            frame,
+            text="Reference Organism",
+        )
+
+        reference_label.pack(
+            anchor="w",
+            padx=theme.CHECKBOX_PADX,
+            pady=(0, 5),
+        )
+
+        organism_selector = WidgetFactory.create_combobox(
+            frame,
+            state="readonly",
+        )
+
+        organism_selector.pack(
+            fill="x",
+            padx=theme.CHECKBOX_PADX,
+            pady=(0, 10),
         )
 
         codon_frequency_checkbox = WidgetFactory.create_checkbox(
@@ -227,10 +253,14 @@ class AnalysisFactory:
             pady=theme.CHECKBOX_PADY_END,
         )
 
-        return frame, {
-            "codon_frequency": codon_frequency_checkbox,
-            "codon_usage": codon_usage_checkbox,
-        }
+        return (
+            frame,
+            {
+                "codon_frequency": codon_frequency_checkbox,
+                "codon_usage": codon_usage_checkbox,
+            },
+            organism_selector,
+        )
 
     # --------------------------------------------------
     # Action Section
