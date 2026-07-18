@@ -26,10 +26,18 @@ class AnalysisService:
     Coordinates biological analyses.
     """
 
+    # ==========================================================
+    # Length
+    # ==========================================================
+
     def get_sequence_length(self,sequence: Sequence) -> int:
         """Coordinate sequence length analysis for a biological sequence."""
 
         return sequence.length
+
+    # ==========================================================
+    # Composition Analysis
+    # ==========================================================
 
     def get_gc_content(self, sequence: Sequence) -> float:
         """Coordinate GC content analysis for a biological sequence."""
@@ -51,6 +59,10 @@ class AnalysisService:
 
         return sequence.molecular_weight()
 
+    # ==========================================================
+    # Sequence Operations
+    # ==========================================================
+
     def get_reverse(self, sequence: Sequence) -> Seq:
         """Coordinate sequence reverse operation."""
 
@@ -66,12 +78,30 @@ class AnalysisService:
 
         return sequence.reverse_complement()
 
-    def get_transcribe(self, sequence: Sequence) -> Seq:
+    # ==========================================================
+    # Gene Expression
+    # ==========================================================
+
+    def get_transcribe(self, sequence: Sequence) -> str:
         """Coordinate sequence transcription operation."""
 
         return sequence.transcribe()
 
-    def get_translate(self, sequence: Sequence) -> Seq:
+    def get_translate(self, sequence: Sequence) -> str:
         """Coordinate sequence translation operation."""
 
         return sequence.translate()
+
+    # ==========================================================
+    # Codon Analysis
+    # ==========================================================
+
+    def get_codon_frequency(self, sequence: Sequence) -> dict[str, int]:
+        """Coordinate codon frequency analysis for a biological sequence."""
+
+        return sequence.codon_frequency()
+
+    def get_codon_usage(self,sequence: Sequence) -> list[dict[str, str | int]]:
+        """Coordinate codon usage analysis for a biological sequence."""
+
+        return sequence.codon_usage()

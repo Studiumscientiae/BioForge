@@ -48,7 +48,10 @@ class AnalysisPage(ctk.CTkFrame):
         self.sequence_operations_frame = None
 
         # Gene Expression section
-        self.central_dogma_frame = None
+        self.gene_expression_frame = None
+
+        # Codon Analysis Frame
+        self.codon_analysis_frame = None
 
         # Action widgets
         self.analyze_button = None
@@ -65,9 +68,11 @@ class AnalysisPage(ctk.CTkFrame):
         self.complement_checkbox = None
         self.reverse_complement_checkbox = None
 
-        # Central Dogma
+        # Gene Expression
         self.transcription_checkbox = None
         self.translation_checkbox = None
+
+        # Codon analysis
         self.codon_usage_checkbox = None
         self.codon_frequency_checkbox = None
 
@@ -90,7 +95,7 @@ class AnalysisPage(ctk.CTkFrame):
         self.grid_columnconfigure(1, weight=2)
 
         # Left workspace panel
-        self.left_panel = WidgetFactory.create_frame(self)
+        self.left_panel = WidgetFactory.create_scrollable_frame(self)
         self.left_panel.grid(row=0,column=0,sticky="nsew",padx=theme.LEFT_PANEL_PADX,pady=theme.LEFT_PANEL_PADY)
 
         # Right workspace panel
@@ -142,23 +147,37 @@ class AnalysisPage(ctk.CTkFrame):
         self.complement_checkbox = operations["complement"]
         self.reverse_complement_checkbox = operations["reverse_complement"]
 
-        # Central Dogma
-        self.central_dogma_frame, dogma = (
-            AnalysisFactory.create_central_dogma_section(
+        # Gene Expression
+        self.gene_expression_frame, gene = (
+            AnalysisFactory.create_gene_expression_section(
                 self.left_panel
             )
         )
 
-        self.central_dogma_frame.pack(
+        self.gene_expression_frame.pack(
             fill="x",
             padx=theme.FRAME_PADX,
             pady=theme.FRAME_PADY,
         )
 
-        self.transcription_checkbox = dogma["transcription"]
-        self.translation_checkbox = dogma["translation"]
-        self.codon_usage_checkbox = dogma["codon_usage"]
-        self.codon_frequency_checkbox = dogma["codon_frequency"]
+        self.transcription_checkbox = gene["transcription"]
+        self.translation_checkbox = gene["translation"]
+
+        # Codon Analysis
+        self.codon_analysis_frame, codon = (
+            AnalysisFactory.create_codon_analysis_section(
+                self.left_panel
+            )
+        )
+
+        self.codon_analysis_frame.pack(
+            fill="x",
+            padx=theme.FRAME_PADX,
+            pady=theme.FRAME_PADY,
+        )
+
+        self.codon_frequency_checkbox = codon["codon_frequency"]
+        self.codon_usage_checkbox = codon["codon_usage"]
 
         # Analyze Button
         self.analyze_button = AnalysisFactory.create_action_section(
@@ -196,7 +215,8 @@ class AnalysisPage(ctk.CTkFrame):
 
         self.analyze_statistics(results)
         self.analyze_sequence_operations(results)
-        self.analyze_central_dogma(results)
+        self.analyze_gene_expression(results)
+        self.analyze_codon_analysis(results)
 
         if not results:
             self.display_results("Please select at least one analysis.")
@@ -219,7 +239,7 @@ class AnalysisPage(ctk.CTkFrame):
 
             self.append_result(results,
                 "Sequence Length",
-                f"{length} nt",
+                f"{length} bp",
             )
 
         # GC Content
@@ -251,7 +271,7 @@ class AnalysisPage(ctk.CTkFrame):
             self.add_section(results, "Nucleotide Counts")
 
             for base, count in counts.items():
-                results.append(f"{base}: {count}")
+                results.append(f"{base:<2}: {count}")
 
             results.append("")
 
@@ -263,7 +283,7 @@ class AnalysisPage(ctk.CTkFrame):
 
             self.append_result(results,
                 "Molecular Weight",
-                f"{weight:.2f} Da",
+                f"{weight:,.2f} Da",
             )
 
     def analyze_sequence_operations(self,results: list[str],):
@@ -302,7 +322,7 @@ class AnalysisPage(ctk.CTkFrame):
                 str(reverse_complement),
             )
 
-    def analyze_central_dogma(self,results: list[str],):
+    def analyze_gene_expression(self,results: list[str],):
         """Run selected Central Dogma analyses."""
 
         if self.transcription_checkbox.get():
@@ -327,6 +347,49 @@ class AnalysisPage(ctk.CTkFrame):
                 str(protein),
             )
 
+            results.append("* = Stop codon")
+            results.append("")
+
+    def analyze_codon_analysis(self, results: list[str]):
+
+        if self.codon_frequency_checkbox.get():
+            frequency = self.analysis_service.get_codon_frequency(
+                self.current_sequence
+            )
+
+            self.add_section(results, "Codon Frequency")
+
+            for codon, count in sorted(frequency.items()):
+                results.append(f"{codon:<4}: {count:>4}")
+
+            results.append("")
+
+        if self.codon_usage_checkbox.get():
+            usage = self.analysis_service.get_codon_usage(
+                self.current_sequence
+            )
+
+            self.add_section(results, "Codon Usage")
+
+            results.append(
+                f"{'Codon':<8}"
+                f"{'AA':<4}"
+                f"{'Amino Acid':<20}"
+                f"{'Count':>5}"
+            )
+
+            results.append("-" * 82)
+
+            for item in sorted(usage, key=lambda x: x["codon"]):
+                results.append(
+                    f"{item['codon']:<8}"
+                    f"{item['amino_acid']:<4}"
+                    f"{item['amino_acid_name']:<20}"
+                    f"{item['count']:>5}"
+                )
+
+            results.append("")
+
     # -------------------------
     # Utility Methods
     # -------------------------
@@ -346,7 +409,7 @@ class AnalysisPage(ctk.CTkFrame):
         """Append a titled results section."""
 
         results.append(title)
-        results.append("-" * 134)
+        results.append("-" * 82)
 
     def append_result(self,results: list[str],title: str,value: str,):
         """Append a formatted analysis result."""

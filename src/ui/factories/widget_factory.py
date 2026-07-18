@@ -66,9 +66,12 @@ class WidgetFactory:
     def create_textbox(parent, **kwargs) -> ctk.CTkTextbox:
         """Create a textbox."""
 
-        return ctk.CTkTextbox(parent,
-                              height=theme.TEXTBOX_HEIGHT,
-                              **kwargs,)
+        return ctk.CTkTextbox(
+            parent,
+            height=theme.TEXTBOX_HEIGHT,
+            font=theme.TEXTBOX_FONT,
+            **kwargs,
+        )
 
     @staticmethod
     def create_checkbox(parent, *,text: str,**kwargs) -> ctk.CTkCheckBox:
@@ -89,7 +92,10 @@ class WidgetFactory:
 
     @staticmethod
     def create_scrollable_frame(parent, **kwargs) -> ctk.CTkScrollableFrame:
-        """Create a scrollable frame."""
+        """Create a themed scrollable frame."""
 
-        return ctk.CTkScrollableFrame(parent,
-                                      **kwargs,)
+        return ctk.CTkScrollableFrame(
+            parent,
+            corner_radius=theme.FRAME_CORNER_RADIUS,
+            **kwargs,
+        )

@@ -103,7 +103,7 @@ class AnalysisFactory:
 
         frame, _ = UIFactory.create_section_frame(
             parent,
-            title="Sequence Transformations",
+            title="Sequence Operations",
         )
 
         reverse_checkbox = WidgetFactory.create_checkbox(
@@ -145,15 +145,15 @@ class AnalysisFactory:
         }
 
     # --------------------------------------------------
-    # Central Dogma
+    # Gene Expression
     # --------------------------------------------------
 
     @staticmethod
-    def create_central_dogma_section(parent,) -> tuple[ctk.CTkFrame, dict[str, ctk.CTkCheckBox]]:
+    def create_gene_expression_section(parent,) -> tuple[ctk.CTkFrame, dict[str, ctk.CTkCheckBox]]:
 
         frame, _ = UIFactory.create_section_frame(
             parent,
-            title="Central Dogma",
+            title="Gene Expression",
         )
 
         transcription_checkbox = WidgetFactory.create_checkbox(
@@ -166,20 +166,8 @@ class AnalysisFactory:
             text="Protein Translation",
         )
 
-        codon_usage_checkbox = WidgetFactory.create_checkbox(
-            frame,
-            text="Codon Usage",
-        )
-
-        codon_frequency_checkbox = WidgetFactory.create_checkbox(
-            frame,
-            text="Codon Frequency",
-        )
-
         controls = [
             transcription_checkbox,
-            translation_checkbox,
-            codon_usage_checkbox,
         ]
 
         for checkbox in controls:
@@ -189,7 +177,7 @@ class AnalysisFactory:
                 pady=theme.CHECKBOX_PADY,
             )
 
-        codon_frequency_checkbox.pack(
+        translation_checkbox.pack(
             anchor="w",
             padx=theme.CHECKBOX_PADX,
             pady=theme.CHECKBOX_PADY_END,
@@ -198,8 +186,50 @@ class AnalysisFactory:
         return frame, {
             "transcription": transcription_checkbox,
             "translation": translation_checkbox,
-            "codon_usage": codon_usage_checkbox,
+        }
+
+    # --------------------------------------------------
+    # Codon Analysis Section
+    # --------------------------------------------------
+
+    @staticmethod
+    def create_codon_analysis_section(parent,) -> tuple[ctk.CTkFrame, dict[str, ctk.CTkCheckBox]]:
+
+        frame, _ = UIFactory.create_section_frame(
+            parent,
+            title="Codon Analysis",
+        )
+
+        codon_frequency_checkbox = WidgetFactory.create_checkbox(
+            frame,
+            text="Codon Frequency",
+        )
+
+        codon_usage_checkbox = WidgetFactory.create_checkbox(
+            frame,
+            text="Codon Usage",
+        )
+
+        controls = [
+            codon_frequency_checkbox,
+        ]
+
+        for checkbox in controls:
+            checkbox.pack(
+                anchor="w",
+                padx=theme.CHECKBOX_PADX,
+                pady=theme.CHECKBOX_PADY,
+            )
+
+        codon_usage_checkbox.pack(
+            anchor="w",
+            padx=theme.CHECKBOX_PADX,
+            pady=theme.CHECKBOX_PADY_END,
+        )
+
+        return frame, {
             "codon_frequency": codon_frequency_checkbox,
+            "codon_usage": codon_usage_checkbox,
         }
 
     # --------------------------------------------------

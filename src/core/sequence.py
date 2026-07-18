@@ -17,6 +17,36 @@ Non-responsibilities:
 
 from Bio.Seq import Seq
 from Bio.SeqUtils import gc_fraction, molecular_weight
+from collections import Counter
+from Bio.Data import CodonTable
+
+# ==========================================================
+# Amino Acid Metadata
+# ==========================================================
+
+AMINO_ACID_NAMES = {
+    "A": "Alanine",
+    "R": "Arginine",
+    "N": "Asparagine",
+    "D": "Aspartic acid",
+    "C": "Cysteine",
+    "Q": "Glutamine",
+    "E": "Glutamic acid",
+    "G": "Glycine",
+    "H": "Histidine",
+    "I": "Isoleucine",
+    "L": "Leucine",
+    "K": "Lysine",
+    "M": "Methionine",
+    "F": "Phenylalanine",
+    "P": "Proline",
+    "S": "Serine",
+    "T": "Threonine",
+    "W": "Tryptophan",
+    "Y": "Tyrosine",
+    "V": "Valine",
+    "*": "Stop"
+}
 
 class Sequence:
 
@@ -83,13 +113,69 @@ class Sequence:
 
         return self.sequence.reverse_complement()
 
-    def transcribe(self) -> Seq:
+    def _codons(self) -> list[str]:
+        """
+        Split the DNA sequence into complete codons.
+
+        Returns:
+            list[str]: List of complete 3-base codons.
+
+        Notes:
+            Any trailing bases that do not form a complete codon
+            are ignored.
+        """
+        return [
+            str(self.sequence[i:i + 3])
+            for i in range(0, len(self.sequence) - 2, 3)
+        ]
+
+    def transcribe(self) -> str:
         """Return the RNA transcript of the DNA sequence."""
 
         return str(self.sequence.transcribe())
 
-    def translate(self) -> Seq:
+    def translate(self) -> str:
         """Return the protein translated from the DNA sequence."""
 
         rna = self.sequence.transcribe()
         return str(rna.translate())
+
+    def codon_frequency(self) -> dict[str, int]:
+        """
+            Count the frequency of each codon in the DNA sequence.
+
+            Returns:
+                dict[str, int]: Dictionary mapping codons to their counts.
+            """
+
+        return dict(Counter(self._codons()))
+
+    def codon_usage(self) -> list[dict[str, str | int]]:
+        """
+        Return codon usage statistics for the sequence.
+
+        Each record contains:
+
+        - DNA codon
+        - Amino acid symbol
+        - Amino acid name
+        - Observed count
+        """
+
+        table = CodonTable.standard_dna_table
+        frequency = self.codon_frequency()
+
+        usage = []
+
+        for codon in sorted(frequency):
+            count = frequency[codon]
+            amino_acid = table.forward_table.get(codon, "*")
+
+            usage.append({
+                "codon": codon,
+                "amino_acid": amino_acid,
+                "amino_acid_name": AMINO_ACID_NAMES[amino_acid],
+                "count": count,
+            })
+
+        return usage
