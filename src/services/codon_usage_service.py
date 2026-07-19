@@ -107,3 +107,37 @@ class CodonUsageService:
     def clear_cache(self) -> None:
         """Clear all cached datasets."""
         self._cache.clear()
+
+    def get_codon_reference(self,organism: str,codon: str) -> dict | None:
+        """
+        Return reference information for a codon from the selected organism.
+
+        Parameters
+        ----------
+        organism : str
+            Reference organism.
+
+        codon : str
+            DNA codon (e.g. "ATG").
+
+        Returns
+        -------
+        dict | None
+            Reference information for the codon, or None if not found.
+        """
+
+        dataframe = self.get_dataframe(organism)
+
+        row = dataframe.loc[dataframe["Codon"] == codon]
+
+        if row.empty:
+            return None
+
+        record = row.iloc[0]
+
+        return {
+            "codon": record["Codon"],
+            "aminoacid": record["Aminoacid"],
+            "frequency": float(record["Frequency"]),
+            "count": int(record["Count"]),
+        }

@@ -87,8 +87,8 @@ class AnalysisService:
 
         return sequence.transcribe()
 
-    def get_translate(self, sequence: Sequence) -> str:
-        """Coordinate sequence translation operation."""
+    def get_translate(self, sequence: Sequence) -> tuple[str, int]:
+        """Return translated protein and ignored nucleotide count."""
 
         return sequence.translate()
 

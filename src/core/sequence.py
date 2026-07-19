@@ -134,11 +134,29 @@ class Sequence:
 
         return str(self.sequence.transcribe())
 
-    def translate(self) -> str:
-        """Return the protein translated from the DNA sequence."""
+    def translate(self) -> tuple[str, int]:
+        """
+        Translate the DNA sequence into a protein.
 
-        rna = self.sequence.transcribe()
-        return str(rna.translate())
+        Returns
+        -------
+        tuple[str, int]
+            (
+                translated protein sequence,
+                number of ignored trailing nucleotides
+            )
+        """
+
+        remainder = self.length % 3
+
+        dna = self.sequence
+
+        if remainder:
+            dna = dna[:-remainder]
+
+        protein = dna.transcribe().translate()
+
+        return str(protein), remainder
 
     def codon_frequency(self) -> dict[str, int]:
         """

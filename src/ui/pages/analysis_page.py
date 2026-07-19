@@ -351,16 +351,24 @@ class AnalysisPage(ctk.CTkFrame):
             )
 
         if self.translation_checkbox.get():
-            protein = self.analysis_service.get_translate(
+            protein, remainder = self.analysis_service.get_translate(
                 self.current_sequence
             )
 
-            self.append_result(
-                results,
-                "Translation (Protein)",
-                str(protein),
-            )
+            self.add_section(results, "Translation")
 
+            if remainder:
+                results.append(
+                    "Sequence length is not a multiple of 3."
+                )
+                results.append(
+                    f"Ignoring the final {remainder} nucleotide(s)."
+                )
+                results.append("")
+
+            results.append("Protein")
+            results.append(protein)
+            results.append("")
             results.append("* = Stop codon")
             results.append("")
 
@@ -383,23 +391,40 @@ class AnalysisPage(ctk.CTkFrame):
                 self.current_sequence
             )
 
+            organism = self.organism_selector.get()
+
+            self.add_section(results, "Reference Organism")
+            results.append(organism)
+            results.append("")
+
             self.add_section(results, "Codon Usage")
 
             results.append(
                 f"{'Codon':<8}"
                 f"{'AA':<4}"
-                f"{'Amino Acid':<20}"
-                f"{'Count':>5}"
+                f"{'Count':>8}"
+                f"{'Ref Frequency (‰)':>10}"
             )
 
             results.append("-" * 82)
 
             for item in sorted(usage, key=lambda x: x["codon"]):
+                reference = self.codon_usage_service.get_codon_reference(
+                    organism,
+                    item["codon"],
+                )
+
+                ref_frequency = (
+                    f"{reference['frequency']:.1f}"
+                    if reference
+                    else "-"
+                )
+
                 results.append(
                     f"{item['codon']:<8}"
                     f"{item['amino_acid']:<4}"
-                    f"{item['amino_acid_name']:<20}"
-                    f"{item['count']:>5}"
+                    f"{item['count']:>8}"
+                    f"{ref_frequency:>10}"
                 )
 
             results.append("")
