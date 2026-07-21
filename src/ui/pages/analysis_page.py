@@ -397,34 +397,54 @@ class AnalysisPage(ctk.CTkFrame):
             results.append(organism)
             results.append("")
 
-            self.add_section(results, "Codon Usage")
+            total_codons = self.analysis_service.get_codon_count(
+                self.current_sequence
+            )
+
+            self.add_section(results, "Total Codons")
+            results.append(str(total_codons))
+            results.append("")
+
+            self.add_section(results, "Codon Usage Comparison")
 
             results.append(
                 f"{'Codon':<8}"
                 f"{'AA':<4}"
                 f"{'Count':>8}"
-                f"{'Ref Frequency (‰)':>10}"
+                f"{'Seq (‰)':>12}"
+                f"{'Ref (‰)':>12}"
+                f"{'Diff (‰)':>12}"
             )
 
             results.append("-" * 82)
 
             for item in sorted(usage, key=lambda x: x["codon"]):
+
                 reference = self.codon_usage_service.get_codon_reference(
                     organism,
                     item["codon"],
                 )
 
-                ref_frequency = (
-                    f"{reference['frequency']:.1f}"
-                    if reference
-                    else "-"
-                )
+                seq_frequency = item["sequence_frequency"]
+
+                if reference:
+                    ref_frequency = reference["frequency"]
+                    difference = seq_frequency - ref_frequency
+
+                    ref_text = f"{ref_frequency:.1f}"
+                    diff_text = f"{difference:+.1f}"
+
+                else:
+                    ref_text = "-"
+                    diff_text = "-"
 
                 results.append(
                     f"{item['codon']:<8}"
                     f"{item['amino_acid']:<4}"
                     f"{item['count']:>8}"
-                    f"{ref_frequency:>10}"
+                    f"{seq_frequency:>12.1f}"
+                    f"{ref_text:>12}"
+                    f"{diff_text:>12}"
                 )
 
             results.append("")

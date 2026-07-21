@@ -101,6 +101,16 @@ class AnalysisService:
 
         return sequence.codon_frequency()
 
+    def get_codon_relative_frequency(self, sequence: Sequence) -> dict[str, int]:
+        """Coordinate codon relative frequency analysis for a biological sequence."""
+
+        return sequence.codon_relative_frequency()
+
+    def get_codon_count(self,sequence: Sequence) -> int:
+        """Return the total number of complete codons."""
+
+        return sequence.codon_count
+
     def get_codon_usage(self,sequence: Sequence) -> list[dict[str, str | int]]:
         """Coordinate codon usage analysis for a biological sequence."""
 

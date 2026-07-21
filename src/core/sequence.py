@@ -129,6 +129,12 @@ class Sequence:
             for i in range(0, len(self.sequence) - 2, 3)
         ]
 
+    @property
+    def codon_count(self) -> int:
+        """Return the total number of complete codons."""
+
+        return len(self._codons())
+
     def transcribe(self) -> str:
         """Return the RNA transcript of the DNA sequence."""
 
@@ -168,6 +174,28 @@ class Sequence:
 
         return dict(Counter(self._codons()))
 
+    def codon_relative_frequency(self) -> dict[str, float]:
+        """
+        Return the relative frequency of each codon
+        as occurrences per thousand (‰).
+
+        Formula
+        -------
+        (count / total_codons) × 1000
+        """
+
+        frequency = self.codon_frequency()
+
+        total_codons = sum(frequency.values())
+
+        if total_codons == 0:
+            return {}
+
+        return {
+            codon: (count / total_codons) * 1000
+            for codon, count in frequency.items()
+        }
+
     def codon_usage(self) -> list[dict[str, str | int]]:
         """
         Return codon usage statistics for the sequence.
@@ -182,6 +210,7 @@ class Sequence:
 
         table = CodonTable.standard_dna_table
         frequency = self.codon_frequency()
+        relative_frequency = self.codon_relative_frequency()
 
         usage = []
 
@@ -194,6 +223,7 @@ class Sequence:
                 "amino_acid": amino_acid,
                 "amino_acid_name": AMINO_ACID_NAMES[amino_acid],
                 "count": count,
+                "sequence_frequency": relative_frequency[codon],
             })
 
         return usage
